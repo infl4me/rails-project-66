@@ -24,17 +24,24 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       -
         name: Load cache
-        run: docker pull ${IMAGE_NAME_LATEST}
+        run: |
+              docker pull ${IMAGE_NAME_LATEST}
+              docker build --cache-from ${IMAGE_NAME_LATEST}
+                            --tag ${IMAGE_NAME}
+                            --tag ${IMAGE_NAME_LATEST} .
+              docker push ${IMAGE_NAME}
+              docker push ${IMAGE_NAME_LATEST}
+
       -
-        name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          file: .swarm/Dockerfile
-          cache-from: ${{ env.IMAGE_NAME_LATEST }}
-          push: true
-          tags: |
-            ${{ env.IMAGE_NAME }}
-            ${{ env.IMAGE_NAME_LATEST }}
+        # name: Build and push
+        # uses: docker/build-push-action@v3
+        # with:
+        #   file: .swarm/Dockerfile
+        #   cache-from: ${{ env.IMAGE_NAME_LATEST }}
+        #   push: true
+        #   tags: |
+        #     ${{ env.IMAGE_NAME }}
+        #     ${{ env.IMAGE_NAME_LATEST }}
   test:
     needs: build
     name: Test
