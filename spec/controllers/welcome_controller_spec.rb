@@ -7,7 +7,7 @@ describe ::WelcomeController do
 
   describe '#index' do
     it 'render page' do
-      raise 'asd!@'
+      raise 'asd!@4'
     end
   end
 end
