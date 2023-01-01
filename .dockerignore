@@ -16,3 +16,7 @@
 /Makefile
 /Procfile
 /README.md
+.git
+.swarm
+docker-compose.yml
+docker-compose-test.yml
