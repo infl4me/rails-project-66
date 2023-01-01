@@ -24,21 +24,11 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - uses: actions/checkout@master
       -
-        name: Load cache and build an image
-        run: |
-              docker pull ${IMAGE_NAME_LATEST}
-              docker buildx build -f .swarm/Dockerfile --build-arg BUILDKIT_INLINE_CACHE=1 --tag inflame/github-analyzer:latest --cache-from inflame/github-analyzer:latest --push .
-
-      # -
-        # name: Build and push
-        # uses: docker/build-push-action@v3
-        # with:
-        #   file: .swarm/Dockerfile
-        #   cache-from: ${{ env.IMAGE_NAME_LATEST }}
-        #   push: true
-        #   tags: |
-        #     ${{ env.IMAGE_NAME }}
-        #     ${{ env.IMAGE_NAME_LATEST }}
+        name: Load cache
+        run: docker pull ${IMAGE_NAME_LATEST}
+      -
+        name: Build image
+        run: docker buildx build -f .swarm/Dockerfile --build-arg BUILDKIT_INLINE_CACHE=1 --tag inflame/github-analyzer:latest --cache-from inflame/github-analyzer:latest --push .
   test:
     needs: build
     name: Test
