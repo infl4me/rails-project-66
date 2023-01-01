@@ -1,0 +1,19 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: db
+  username: postgres
+  password: password
+  pool: 5
+
+development:
+  <<: *default
+  database: github_analyzer_dev
+
+test:
+  <<: *default
+  database: github_analyzer_test
+
+production:
+  <<: *default
+  database: github_analyzer_production

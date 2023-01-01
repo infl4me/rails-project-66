@@ -1,0 +1,73 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - 'main'
+
+env:
+  IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/${{secrets.DOCKER_HUB_IMAGE_NAME}}:${{github.sha}}
+  IMAGE_NAME_LATEST: ${{ secrets.DOCKER_HUB_USERNAME }}/${{secrets.DOCKER_HUB_IMAGE_NAME}}:latest
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      -
+        name: Load cache
+        run: docker pull ${IMAGE_NAME_LATEST}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          file: .swarm/Dockerfile
+          cache-from: ${{ env.IMAGE_NAME_LATEST }}
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME }}
+            ${{ env.IMAGE_NAME_LATEST }}
+  test:
+    needs: build
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run tests
+        run: |
+          docker compose -f docker-compose-tests.yml up -d
+          docker compose -f docker-compose-tests.yml exec web bundle exec rails db:create db:migrate
+          docker compose -f docker-compose-tests.yml exec web bundle exec rspec
+  deploy:
+    needs: test
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: copy files
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: ".swarm/docker-compose.yml"
+          target: "~/github-analyzer-app/"
+      - name: deploy application
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            docker stack deploy -c ~/github-analyzer-app/.swarm/docker-compose.yml github-analyzer
+          
