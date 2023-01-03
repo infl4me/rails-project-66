@@ -17,7 +17,7 @@ services:
       - 3000:3000
     volumes:
       - ./public/assets:/app/public/assets
-      - ./log:/:app/log
+      - ./log:/app/log
     depends_on:
       - db
     environment:
