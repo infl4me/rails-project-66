@@ -8,6 +8,8 @@ on:
 env:
   IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/${{secrets.DOCKER_HUB_IMAGE_NAME}}:${{github.sha}}
   IMAGE_NAME_LATEST: ${{ secrets.DOCKER_HUB_USERNAME }}/${{secrets.DOCKER_HUB_IMAGE_NAME}}:latest
+  NGINX_IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/${{secrets.DOCKER_HUB_IMAGE_NAME}}-nginx:${{github.sha}}
+  NGINX_IMAGE_NAME_LATEST: ${{ secrets.DOCKER_HUB_USERNAME }}/${{secrets.DOCKER_HUB_IMAGE_NAME}}-nginx:latest
 
 jobs:
   build:
@@ -49,6 +51,28 @@ jobs:
           docker compose -f docker-compose-tests.yml up -d
           # docker compose -f docker-compose-tests.yml exec web bundle exec rails db:create db:migrate
           docker compose -f docker-compose-tests.yml exec web bundle exec rspec
+  build-nginx:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/setup-buildx-action@v2
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: .swarm/nginx/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          push: true
+          tags: |
+            ${{ env.NGINX_IMAGE_NAME }}
+            ${{ env.NGINX_IMAGE_NAME_LATEST }}
   deploy:
     needs: test
     name: Deploy
