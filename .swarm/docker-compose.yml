@@ -13,12 +13,11 @@ services:
       POSTGRES_PASSWORD: password
   web:
     image: inflame/github-analyzer:latest
-    command: RAILS_ENV=production SECRET_KEY_BASE=1 bundle exec rails assets:precompile && bundle exec rails s
     ports:
       - 3000:3000
     volumes:
-      - ./public/assets:/app/public/assets:ro
-      - ./log:/app/log:ro
+      - ./public/assets:/app/public/assets
+      - ./log:/app/log
     depends_on:
       - db
     environment:
