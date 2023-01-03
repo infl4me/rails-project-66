@@ -16,7 +16,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./public/assets:./public/assets
+      - ./public/assets:/app/public/assets
     depends_on:
       - db
     environment:
