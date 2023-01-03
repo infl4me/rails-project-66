@@ -47,7 +47,7 @@ jobs:
       - name: Run tests
         run: |
           docker compose -f docker-compose-tests.yml up -d
-          docker compose -f docker-compose-tests.yml exec web bundle exec rails db:create db:migrate
+          # docker compose -f docker-compose-tests.yml exec web bundle exec rails db:create db:migrate
           docker compose -f docker-compose-tests.yml exec web bundle exec rspec
   deploy:
     needs: test
