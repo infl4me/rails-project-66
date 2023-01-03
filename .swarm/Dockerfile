@@ -10,7 +10,7 @@ RUN bundle install
 
 COPY . ./
 
-RUN RAILS_ENV=production SECRET_KEY_BASE=1 bundle exec rails assets:precompile
+# RUN RAILS_ENV=production SECRET_KEY_BASE=1 bundle exec rails assets:precompile
 
 # Add a script to be executed every time the container starts.
 COPY entrypoint.sh /usr/bin/
@@ -19,4 +19,4 @@ ENTRYPOINT ["entrypoint.sh"]
 
 EXPOSE 3000
 # Configure the main process to run when running the image
-CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+# CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3000"]
