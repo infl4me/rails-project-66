@@ -1,8 +1,8 @@
 version: '3.9'
 
 services:
-  nginx:
-    image: inflame/github-analyzer-nginx:latest
+  web:
+    image: inflame/github-analyzer-web:latest
     ports:
       - 80:80
   db:
@@ -11,7 +11,7 @@ services:
       - db-vol:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: password
-  web:
+  app:
     image: inflame/github-analyzer:latest
     ports:
       - 3000:3000

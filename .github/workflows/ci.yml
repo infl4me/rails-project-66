@@ -8,8 +8,8 @@ on:
 env:
   IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/${{secrets.DOCKER_HUB_IMAGE_NAME}}:${{github.sha}}
   IMAGE_NAME_LATEST: ${{ secrets.DOCKER_HUB_USERNAME }}/${{secrets.DOCKER_HUB_IMAGE_NAME}}:latest
-  NGINX_IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/${{secrets.DOCKER_HUB_IMAGE_NAME}}-nginx:${{github.sha}}
-  NGINX_IMAGE_NAME_LATEST: ${{ secrets.DOCKER_HUB_USERNAME }}/${{secrets.DOCKER_HUB_IMAGE_NAME}}-nginx:latest
+  NGINX_IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/${{secrets.DOCKER_HUB_IMAGE_NAME}}-web:${{github.sha}}
+  NGINX_IMAGE_NAME_LATEST: ${{ secrets.DOCKER_HUB_USERNAME }}/${{secrets.DOCKER_HUB_IMAGE_NAME}}-web:latest
 
 jobs:
   build:
@@ -49,9 +49,9 @@ jobs:
       - name: Run tests
         run: |
           docker compose -f docker-compose-tests.yml up -d
-          # docker compose -f docker-compose-tests.yml exec web bundle exec rails db:create db:migrate
-          docker compose -f docker-compose-tests.yml exec web bundle exec rspec
-  build-nginx:
+          # docker compose -f docker-compose-tests.yml exec app bundle exec rails db:create db:migrate
+          docker compose -f docker-compose-tests.yml exec app bundle exec rspec
+  build-web:
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -74,7 +74,7 @@ jobs:
             ${{ env.NGINX_IMAGE_NAME }}
             ${{ env.NGINX_IMAGE_NAME_LATEST }}
   deploy:
-    needs: build-nginx
+    needs: build-web
     name: Deploy
     runs-on: ubuntu-latest
     steps:

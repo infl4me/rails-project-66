@@ -7,7 +7,7 @@ services:
       - ./tmp/db:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: password
-  web:
+  app:
     build: .
     ports:
       - 3000:3000

@@ -7,7 +7,7 @@ services:
       - db-tests:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: password
-  web:
+  app:
     image: ${IMAGE_NAME}
     depends_on:
       - db
