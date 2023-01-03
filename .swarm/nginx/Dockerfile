@@ -1,6 +1,6 @@
 FROM nginx:1.23.3
 
-COPY ./swarm/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./.swarm/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
