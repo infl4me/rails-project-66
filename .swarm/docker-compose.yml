@@ -19,11 +19,23 @@ services:
     environment:
       RAILS_ENV: production
       SECRET_KEY_BASE: test
+    healthcheck:
+      test: ["CMD", "curl", "-i", "http://localhost:3000/healthcheck"]
     deploy:
-      mode: replicated
       replicas: 2
       update_config:
         parallelism: 1
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
   web:
     depends_on:
       - app
