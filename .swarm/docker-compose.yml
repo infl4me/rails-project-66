@@ -19,6 +19,11 @@ services:
     environment:
       RAILS_ENV: production
       SECRET_KEY_BASE: test
+    deploy:
+      mode: replicated
+      replicas: 2
+      update_config:
+        parallelism: 1
   web:
     depends_on:
       - app
@@ -28,11 +33,6 @@ services:
     volumes:
       - ./public:/var/www/github-analyzer/public
       - ./log:/var/www/github-analyzer/log
-    deploy:
-      mode: replicated
-      replicas: 2
-      update_config:
-        parallelism: 1
 
 
 volumes:
