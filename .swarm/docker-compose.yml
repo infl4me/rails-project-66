@@ -28,6 +28,12 @@ services:
     volumes:
       - ./public:/var/www/github-analyzer/public
       - ./log:/var/www/github-analyzer/log
+    deploy:
+      mode: replicated
+      replicas: 2
+      update_config:
+        parallelism: 1
+
 
 volumes:
   db-vol:
