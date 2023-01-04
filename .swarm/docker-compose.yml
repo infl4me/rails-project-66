@@ -1,10 +1,6 @@
 version: '3.9'
 
 services:
-  web:
-    image: inflame/github-analyzer-web:latest
-    ports:
-      - 80:80
   db:
     image: postgres:15.1
     volumes:
@@ -12,17 +8,26 @@ services:
     environment:
       POSTGRES_PASSWORD: password
   app:
+    depends_on:
+      - db
     image: inflame/github-analyzer:latest
     ports:
       - 3000:3000
     volumes:
       - ./public/assets:/app/public/assets
       - ./log:/app/log
-    depends_on:
-      - db
     environment:
       RAILS_ENV: production
       SECRET_KEY_BASE: test
+  web:
+    depends_on:
+      - app
+    image: inflame/github-analyzer-web:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./public:/var/www/github-analyzer/public
+      - ./log:/var/www/github-analyzer/log
 
 volumes:
   db-vol:
