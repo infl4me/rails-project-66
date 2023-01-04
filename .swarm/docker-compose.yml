@@ -22,9 +22,7 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-i", "http://localhost:3000/healthcheck"]
     deploy:
-      replicas: 2
       update_config:
-        parallelism: 1
         order: start-first
         failure_action: rollback
         delay: 10s
