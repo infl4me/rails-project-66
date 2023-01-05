@@ -64,7 +64,7 @@ jobs:
   #           ${{ env.NGINX_IMAGE_NAME }}
   #           ${{ env.NGINX_IMAGE_NAME_LATEST }}
   deploy:
-    needs: build-web
+    # needs: build-web
     name: Deploy
     runs-on: ubuntu-latest
     steps:
