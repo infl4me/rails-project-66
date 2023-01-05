@@ -86,5 +86,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            docker stack deploy -c ~/github-analyzer-app/.swarm/docker-compose.yml github-analyzer
+            IMAGE_NAME=${IMAGE_NAME} NGINX_IMAGE_NAME=${NGINX_IMAGE_NAME} docker stack deploy -c ~/github-analyzer-app/.swarm/docker-compose.yml github-analyzer
           
