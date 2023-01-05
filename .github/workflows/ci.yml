@@ -90,6 +90,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           envs: IMAGE_NAME,NGINX_IMAGE_NAME
           script: |
-            touch asd${IMAGE_NAME}
+            echo ${IMAGE_NAME} > asd
             docker stack deploy -c ~/github-analyzer-app/.swarm/docker-compose.yml github-analyzer
           
