@@ -80,9 +80,6 @@ jobs:
           target: "~/github-analyzer-app/"
       - name: deploy application
         uses: appleboy/ssh-action@v0.1.6
-        env:
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
-          NGINX_IMAGE_NAME: ${{ env.NGINX_IMAGE_NAME }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
@@ -91,5 +88,6 @@ jobs:
           envs: IMAGE_NAME,NGINX_IMAGE_NAME
           script: |
             echo ${IMAGE_NAME} > asd
-            docker stack deploy -c ~/github-analyzer-app/.swarm/docker-compose.yml github-analyzer
+            echo ${NGINX_IMAGE_NAME} > ng2
+            IMAGE_NAME=${IMAGE_NAME} NGINX_IMAGE_NAME=${NGINX_IMAGE_NAME} docker stack deploy -c ~/github-analyzer-app/.swarm/docker-compose.yml github-analyzer
           
