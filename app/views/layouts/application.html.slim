@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    title
+      = t('app_name')
+    meta[name="viewport" content="width=device-width,initial-scale=1"]
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+  body.d-flex.flex-column.h-100
+    main
+      .mt-4.mb-5.pb-5
+        .container
+          - flash.each do |type, msg|
+            div class="alert alert-#{type == 'alert' ? 'danger' : 'info'}"
+              - if msg.is_a?(Array)
+                - msg.each do |cur_msg|
+                  div = cur_msg
+              - else
+                = msg
+          .p-4.align-items-center.border.shadow.bg-white.rounded-3
+            .row
+              .p-3.p-lg-5.pt-lg-0
+                = yield

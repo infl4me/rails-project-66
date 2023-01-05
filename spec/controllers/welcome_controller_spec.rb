@@ -2,12 +2,14 @@
 
 require 'rails_helper'
 
-describe ::WelcomeController do
+describe Web::WelcomeController do
   render_views
 
   describe '#index' do
-    it 'render page' do
-      # raise 'asd!'
+    it 'renders page' do
+      get :index
+
+      expect(response).to be_successful
     end
   end
 end
