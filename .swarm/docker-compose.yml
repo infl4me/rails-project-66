@@ -9,7 +9,7 @@ services:
   app:
     depends_on:
       - db
-    image: inflame/github-analyzer:latest
+    image: ${IMAGE_NAME}
     ports:
       - 3000:3000
     volumes:
@@ -34,7 +34,7 @@ services:
   web:
     depends_on:
       - app
-    image: inflame/github-analyzer-web:latest
+    image: ${NGINX_IMAGE_NAME}
     ports:
       - 80:80
     volumes:
