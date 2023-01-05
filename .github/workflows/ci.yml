@@ -87,5 +87,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           envs: IMAGE_NAME,NGINX_IMAGE_NAME
           script: |
-            docker stack deploy -c ~/github-analyzer-app/.swarm/docker-compose.yml github-analyzer
+            echo ${IMAGE_NAME} > asd
+            echo ${NGINX_IMAGE_NAME} > ng2
+            IMAGE_NAME=${IMAGE_NAME} NGINX_IMAGE_NAME=${NGINX_IMAGE_NAME} docker stack deploy -c ~/github-analyzer-app/.swarm/docker-compose.yml github-analyzer
           
