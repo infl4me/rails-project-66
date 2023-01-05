@@ -38,7 +38,8 @@ jobs:
       -
         name: Build and push image
         run: |
-          docker buildx --build-arg BUILDKIT_INLINE_CACHE=1 \
+          docker buildx build \
+            --build-arg BUILDKIT_INLINE_CACHE=1 \
             -t ${IMAGE_NAME} -t ${IMAGE_NAME_LATEST} \
             --cache-from ${IMAGE_NAME_LATEST} --push .
   check:
