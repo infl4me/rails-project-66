@@ -1,10 +1,13 @@
 version: '3.9'
 
+volumes:
+  gh-analyzer-db:
+
 services:
   db:
     image: postgres:15.1
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data
+      - gh-analyzer-db:/var/lib/postgresql/data
     env_file: .swarm/.env
   app:
     build: .
