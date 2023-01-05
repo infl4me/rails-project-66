@@ -42,9 +42,9 @@ jobs:
             --build-arg BUILDKIT_INLINE_CACHE=1 \
             -t ${IMAGE_NAME} -t ${IMAGE_NAME_LATEST} \
             --cache-from ${IMAGE_NAME_LATEST} --push .
-  test:
+  check:
     needs: build
-    name: Tests
+    name: Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -53,17 +53,9 @@ jobs:
           docker compose -f docker-compose-tests.yml up -d
           docker compose -f docker-compose-tests.yml exec app bundle exec rails db:create db:migrate
           docker compose -f docker-compose-tests.yml exec app bundle exec rspec
-  lint:
-    needs: build
-    name: Linters
-    runs-on: ubuntu-latest
-    container: ${{ env.IMAGE_NAME }}
-    steps:
-      - name: Run linters
-        run: |
-          bundle exec rubocop
+          docker compose -f docker-compose-tests.yml exec app bundle exec rubocop
   build-web:
-    needs: [tests, lint]
+    needs: check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
