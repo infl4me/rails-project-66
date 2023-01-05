@@ -5,8 +5,7 @@ services:
     image: postgres:15.1
     volumes:
       - db-vol:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: password
+    env_file: .env
   app:
     depends_on:
       - db
@@ -16,9 +15,7 @@ services:
     volumes:
       - ./public/assets:/app/public/assets
       - ./log:/app/log
-    environment:
-      RAILS_ENV: production
-      SECRET_KEY_BASE: test
+    env_file: .env
     healthcheck:
       test: ["CMD", "curl", "-i", "http://localhost:3000/healthcheck"]
     deploy:

@@ -5,8 +5,7 @@ services:
     image: postgres:15.1
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: password
+    env_file: .swarm/.env
   app:
     build: .
     ports:
@@ -15,3 +14,4 @@ services:
       - ./:/app
     depends_on:
       - db
+    env_file: .swarm/.env

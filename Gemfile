@@ -76,6 +76,7 @@ group :test do
   gem 'webdrivers'
 end
 
+gem 'appsignal'
 gem 'bootstrap'
 gem 'rails-i18n'
 gem 'sassc-rails'

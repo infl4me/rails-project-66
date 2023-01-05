@@ -5,10 +5,10 @@ services:
     image: postgres:15.1
     volumes:
       - db-tests:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: password
+    env_file: .swarm/.env
   app:
     image: ${IMAGE_NAME}
+    env_file: .swarm/.env
     depends_on:
       - db
 
