@@ -89,6 +89,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            touch ${IMAGE_NAME}
+            touch asd${IMAGE_NAME}
             docker stack deploy -c ~/github-analyzer-app/.swarm/docker-compose.yml github-analyzer
           
