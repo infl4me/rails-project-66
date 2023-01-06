@@ -78,5 +78,7 @@ end
 
 gem 'appsignal'
 gem 'bootstrap'
+gem 'omniauth-github'
+gem 'omniauth-rails_csrf_protection'
 gem 'rails-i18n'
 gem 'sassc-rails'

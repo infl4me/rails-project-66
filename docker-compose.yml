@@ -17,4 +17,6 @@ services:
       - ./:/app
     depends_on:
       - db
-    env_file: .swarm/.env
+    env_file:
+      - .swarm/.env
+      - .swarm/.env.secrets
