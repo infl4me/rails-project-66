@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 class AuthenticateUserService
-  def call(info)
-    email = info.email.downcase
+  def call(data)
+    email = data.info.email.downcase
     user = User.find_or_create_by(email:)
 
     user.update({
-                  nickname: info.nickname,
-                  name: info.name,
-                  image_url: info.image,
-                  token: info.token
+                  nickname: data.info.nickname,
+                  token: data.credentials.token
                 })
+
+    user.reload
   end
 end

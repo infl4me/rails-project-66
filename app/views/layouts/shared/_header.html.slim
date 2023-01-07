@@ -3,8 +3,7 @@ header.container.mb-2
     .navbar.navbar-expand-md.navbar-light.me-auto
       = link_to t('app_name'), root_path, class: 'navbar-brand me-md-4'
     - if signed_in?
-      = link_to t('nav.admin'), admin_root_path, class: 'ms-3 link-dark' if current_user.admin
-      = link_to t('nav.profile'), profile_path, class: 'ms-3 link-dark'
-      = link_to t('auth.sign_out'), auth_destroy_path, method: :delete, class: 'ms-3 link-dark'
+      div = "Hi, #{current_user.nickname}"
+      = button_to t('auth.sign_out'), auth_destroy_path, method: :delete, data: { turbo: false }, class: 'ms-3 btn btn-primary'
     - else
-      = link_to t('auth.sign_in'), auth_request_path('github'), data: { 'turbo-method' => :post }
+      = button_to t('auth.sign_in'), auth_request_path('github'), method: :post, data: { turbo: false }, class: 'ms-3 btn btn-primary'
