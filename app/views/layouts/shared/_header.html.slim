@@ -7,3 +7,6 @@ header.container.mb-2
       = button_to t('auth.sign_out'), auth_destroy_path, method: :delete, data: { turbo: false }, class: 'ms-3 btn btn-primary'
     - else
       = button_to t('auth.sign_in'), auth_request_path('github'), method: :post, data: { turbo: false }, class: 'ms-3 btn btn-primary'
+      = simple_form_for User.new, url: auth_request_path('github'), method: :post  do |f|
+        .form-actions
+          = f.button :submit, t('actions.submit_form'), data: { turbo: false }, class: 'btn btn-primary mt-3'
