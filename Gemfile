@@ -8,7 +8,7 @@ ruby '3.1.2'
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.4'
 
-gem 'slim'
+gem 'slim-rails'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
@@ -51,10 +51,17 @@ gem 'bootsnap', require: false
 
 group :development, :test do
   gem 'byebug'
-  gem 'rspec-rails', '~> 6.0.0'
+
+  gem 'rspec-rails'
+
+  gem 'faker'
+
   gem 'rubocop', require: false
-  gem 'rubocop-rails'
-  gem 'slim_lint'
+  gem 'rubocop-faker', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
+  gem 'slim_lint', require: false
 end
 
 group :development do

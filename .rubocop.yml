@@ -1,7 +1,10 @@
 ---
 
 require:
+  - rubocop-performance
   - rubocop-rails
+  - rubocop-rspec
+  - rubocop-faker
 
 AllCops:
   NewCops: enable
@@ -42,3 +45,6 @@ Style/AsciiComments:
 
 Metrics/ParameterLists:
   Enabled: false
+
+RSpec/MultipleExpectations:
+  Max: 5
