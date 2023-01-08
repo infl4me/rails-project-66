@@ -9,11 +9,7 @@ class Web::AuthController < Web::ApplicationController
   end
 
   def failure
-    Rails.logger.info '@@@'
-    Rails.logger.info request.env['omniauth.auth']
-
-    @asd = request.env['omniauth.auth']
-
+    # TODO: Add flash error
     redirect_to root_path
   end
 
