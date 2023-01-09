@@ -5,23 +5,32 @@ class Web::RepositoriesController < Web::ApplicationController
 
   # GET /web/repositories
   def index
+    authorize Repository
+
     @repositories = Repository.all
   end
 
   # GET /web/repositories/1
-  def show; end
+  def show
+    authorize @repository
+  end
 
   # GET /web/repositories/new
   def new
-    @repository = Repository.new
+    @repository = authorize Repository.new
+
     @repository_options = user_repository_options
   end
 
   # GET /web/repositories/1/edit
-  def edit; end
+  def edit
+    authorize @repository
+  end
 
   # POST /web/repositories
   def create
+    authorize Repository
+
     client = Octokit::Client.new(access_token: current_user.token)
     gh_repo = client.repo(repository_params[:original_id].to_i)
 
@@ -42,6 +51,8 @@ class Web::RepositoriesController < Web::ApplicationController
 
   # PATCH/PUT /web/repositories/1
   def update
+    authorize @repository
+
     if @repository.update(repository_params)
       redirect_to @repository, notice: t('repositories.notices.updated')
     else
@@ -51,6 +62,8 @@ class Web::RepositoriesController < Web::ApplicationController
 
   # DELETE /web/repositories/1
   def destroy
+    authorize @repository
+
     @repository.destroy
     redirect_to repositories_url, notice: t('repositories.notices.destroyed')
   end
