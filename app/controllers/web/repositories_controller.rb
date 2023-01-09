@@ -14,6 +14,7 @@ class Web::RepositoriesController < Web::ApplicationController
   # GET /web/repositories/new
   def new
     @repository = Repository.new
+    @repository_options = user_repository_options
   end
 
   # GET /web/repositories/1/edit
@@ -21,11 +22,20 @@ class Web::RepositoriesController < Web::ApplicationController
 
   # POST /web/repositories
   def create
-    @repository = Repository.new(repository_params)
+    client = Octokit::Client.new(access_token: current_user.token)
+    gh_repo = client.repo(repository_params[:original_id].to_i)
 
-    if @repository.save
-      redirect_to @repository, notice: 'Repository was successfully created.'
+    @repository = Repository.create(
+      user: current_user,
+      original_id: gh_repo.id,
+      language: gh_repo.language.downcase,
+      name: gh_repo.name
+    )
+
+    if @repository.valid?
+      redirect_to repositories_path, notice: t('repositories.notices.created')
     else
+      @repository_options = user_repository_options
       render :new, status: :unprocessable_entity
     end
   end
@@ -33,7 +43,7 @@ class Web::RepositoriesController < Web::ApplicationController
   # PATCH/PUT /web/repositories/1
   def update
     if @repository.update(repository_params)
-      redirect_to @repository, notice: 'Repository was successfully updated.'
+      redirect_to @repository, notice: t('repositories.notices.updated')
     else
       render :edit, status: :unprocessable_entity
     end
@@ -42,7 +52,7 @@ class Web::RepositoriesController < Web::ApplicationController
   # DELETE /web/repositories/1
   def destroy
     @repository.destroy
-    redirect_to repositories_url, notice: 'Repository was successfully destroyed.'
+    redirect_to repositories_url, notice: t('repositories.notices.destroyed')
   end
 
   private
@@ -54,6 +64,15 @@ class Web::RepositoriesController < Web::ApplicationController
 
   # Only allow a list of trusted parameters through.
   def repository_params
-    params.require(:repository).permit(:name, :user_id)
+    params.require(:repository).permit(:original_id)
+  end
+
+  def user_repository_options
+    return @repository_options if @repository_options.present?
+
+    client = Octokit::Client.new(access_token: current_user.token)
+    @repository_options = client.repos({})
+                                .filter { |repo| Repository.language.values.include?(repo.language.downcase) } # rubocop:disable Performance/InefficientHashSearch
+                                .pluck(:name, :id)
   end
 end

@@ -1,12 +1,7 @@
 en:
   app_name: Github Analyzer
   actions_title: Actions
-  admin_panel: Admin Panel
-  profile: Profile
   edit_record: Edit %{name}
-  users:
-    index: Users
-    search/name_or_email: Search user by name or email
   actions:
     show: Show
     edit: Edit
@@ -14,48 +9,23 @@ en:
     submit_form: Submit
   confirmations:
     delete: Are you sure you want to delete this?
-    archive: Are you sure you want to archive this?
   auth:
     sign_in: Sign In
     sign_out: Sign Out
   errors:
     access_denied: Access Denied
-  nav:
-    profile: Profile
-    admin: Admin
-  bulletins:
-    index: Bulletins
-    new: Create Bulletin
+    general_message: Something went wrong. Try again later please
+  repositories:
+    index: Repositories
+    new: Create Repository
     errors:
       too_large: is too large
-    alerts:
-      under_moderation: Bulletin couldn't be sent to moderation
-      published: Bulletin couldn't be published
-      rejected: Bulletin couldn't be rejected
-      archived: Bulletin couldn't be archived
+    # alerts:
+    #   under_moderation: Repository couldn't be sent to moderation
+    #   published: Repository couldn't be published
+    #   rejected: Repository couldn't be rejected
+    #   archived: Repository couldn't be archived
     notices:
-      created: Bulletin was successfully created
-      updated: Bulletin was successfully updated
-      destroyed: Bulletin was successfully deleted
-      under_moderation: Bulletin was successfully sent to moderation
-      published: Bulletin was successfully published
-      rejected: Bulletin was successfully rejected
-      archived: Bulletin was successfully archived
-    search/title/hint: Search by title
-    select/category/hint: Select Category
-    select/state/hint: Select State
-  categories:
-    index: Categories
-    new: Create Category
-    search/name: Search by name
-    notices:
-      created: Category was successfully created
-      updated: Category was successfully updated
-      destroyed: Category was successfully deleted
-  admin_nav:
-    moderation: Moderation
-    all_bulletins: All Bulletins
-    categories: Categories
-    users: Users
-  search_form/submit: Search
-  search_form/reset: Reset
+      created: Repository was successfully created
+      updated: Repository was successfully updated
+      destroyed: Repository was successfully deleted

@@ -9,8 +9,7 @@ class Web::AuthController < Web::ApplicationController
   end
 
   def failure
-    # TODO: Add flash error
-    redirect_to root_path
+    redirect_to root_path, alert: t('errors.general_message')
   end
 
   def destroy

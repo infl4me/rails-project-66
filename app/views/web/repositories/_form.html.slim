@@ -6,6 +6,7 @@
         - @repository.errors.each do |error|
           li = error.full_message
 
-  = form.input :name
+  .form-group.mb-3.select
+    = form.select(:original_id, @repository_options, { include_blank: '' }, { class: 'form-control select', required: true })
 
-  = form.button :submit
+  = form.button :submit, class: 'btn btn-primary me-2'
