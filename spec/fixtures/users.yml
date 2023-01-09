@@ -1,4 +1,5 @@
 user_one:
+  id: 1
   nickname: User one name
   email: asd@asd.com
   token: test_token
