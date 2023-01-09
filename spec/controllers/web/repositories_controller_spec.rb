@@ -44,6 +44,7 @@ describe Web::RepositoriesController do
 
   describe 'GET /new' do
     it 'renders a successful response' do
+      p '!!!', session
       get :new
       expect(response).to be_successful
     end
