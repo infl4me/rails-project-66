@@ -9,6 +9,8 @@ services:
   app:
     image: ${IMAGE_NAME}
     env_file: .swarm/.env
+    environment:
+      - RAILS_ENV=test
     depends_on:
       - db
 
