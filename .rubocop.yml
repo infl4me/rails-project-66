@@ -48,3 +48,6 @@ Metrics/ParameterLists:
 
 RSpec/MultipleExpectations:
   Max: 5
+
+RSpec/PendingWithoutReason:
+  Enabled: false
