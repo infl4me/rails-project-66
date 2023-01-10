@@ -39,6 +39,7 @@ jobs:
       - name: Run tests
         run: |
           docker compose -f docker-compose-tests.yml up -d
+          docker compose -f docker-compose-tests.yml exec -e FIXTURES_PATH=spec/fixtures app rails db:fixtures:load
           docker compose -f docker-compose-tests.yml exec app bundle exec rspec
           docker compose -f docker-compose-tests.yml exec app bundle exec rubocop
   build-web:

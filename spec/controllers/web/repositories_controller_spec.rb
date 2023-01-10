@@ -15,7 +15,12 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 describe Web::RepositoriesController do
-  fixtures :users
+  let(:gh_repositories) { YAML.load(Rails.root.join('spec/fixtures/files/github/repositories.yml').read) }
+
+  before do
+    stub_request(:get, 'https://api.github.com/user/repos')
+      .to_return(status: 200, body: gh_repositories, headers: {})
+  end
 
   # This should return the minimal set of attributes required to create a valid
   # Repository. As you add validations to Repository, be sure to
@@ -44,7 +49,7 @@ describe Web::RepositoriesController do
     end
   end
 
-  xdescribe 'GET /new' do
+  describe 'GET /new' do
     it 'renders a successful response' do
       get :new
       expect(response).to be_successful

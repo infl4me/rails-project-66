@@ -1,5 +1,11 @@
-USER_ID := $(shell id -u)
-GROUP_ID := $(shell id -g)
+start:
+	docker compose up --build
 
-dckrbuild:
-	docker compose build --build-arg USER_ID=${USER_ID} --build-arg GROUP_ID=${GROUP_ID}
+load-fixtures:
+	docker compose exec -e RAILS_ENV=test app rails db:fixtures:load
+
+tests:
+	docker compose exec -e RAILS_ENV=test app bundle exec rspec
+
+console:
+	docker compose exec app rails c

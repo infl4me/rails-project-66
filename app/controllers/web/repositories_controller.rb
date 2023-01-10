@@ -85,7 +85,7 @@ class Web::RepositoriesController < Web::ApplicationController
 
     client = Octokit::Client.new(access_token: current_user.token)
     @repository_options = client.repos({})
-                                .filter { |repo| Repository.language.values.include?(repo.language.downcase) } # rubocop:disable Performance/InefficientHashSearch
+                                .filter { |repo| Repository.language.values.include?(repo['language'].downcase) } # rubocop:disable Performance/InefficientHashSearch
                                 .pluck(:name, :id)
   end
 end
