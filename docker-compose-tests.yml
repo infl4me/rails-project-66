@@ -7,6 +7,8 @@ services:
       - db-tests:/var/lib/postgresql/data
     env_file: .swarm/.env
   app:
+    ports:
+      - 3000:3000
     image: ${IMAGE_NAME}
     env_file: .swarm/.env
     environment:
