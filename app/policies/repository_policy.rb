@@ -25,14 +25,6 @@ class RepositoryPolicy < ApplicationPolicy
     create?
   end
 
-  def update?
-    @user == @repository.user
-  end
-
-  def edit?
-    update?
-  end
-
   def destroy?
     @user == @repository.user
   end

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     delete 'auth/destroy', to: 'auth#destroy'
     get 'auth/failure', to: 'auth#failure'
 
-    resources :repositories
+    resources :repositories, only: %i[index new show destroy create]
   end
 
   get 'healthcheck' => 'healthcheck#index'

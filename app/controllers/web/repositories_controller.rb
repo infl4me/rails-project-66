@@ -1,33 +1,24 @@
 # frozen_string_literal: true
 
 class Web::RepositoriesController < Web::ApplicationController
-  before_action :set_repository, only: %i[show edit update destroy]
+  before_action :set_repository, only: %i[show destroy]
 
-  # GET /web/repositories
   def index
     authorize Repository
 
     @repositories = Repository.all
   end
 
-  # GET /web/repositories/1
   def show
     authorize @repository
   end
 
-  # GET /web/repositories/new
   def new
     @repository = authorize Repository.new
 
     @repository_options = user_repository_options
   end
 
-  # GET /web/repositories/1/edit
-  def edit
-    authorize @repository
-  end
-
-  # POST /web/repositories
   def create
     authorize Repository
 
@@ -49,18 +40,6 @@ class Web::RepositoriesController < Web::ApplicationController
     end
   end
 
-  # PATCH/PUT /web/repositories/1
-  def update
-    authorize @repository
-
-    if @repository.update(repository_params)
-      redirect_to @repository, notice: t('repositories.notices.updated')
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /web/repositories/1
   def destroy
     authorize @repository
 

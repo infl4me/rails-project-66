@@ -64,6 +64,11 @@ RSpec.configure do |config|
 
   config.render_views
 
+  files = Dir[File.join(config.fixture_path, '**/*.{yml}')]
+  files.reject! { |f| f.start_with?(File.join(config.fixture_path, 'files')) }
+  files.map! { |f| f[config.fixture_path.to_s.size..-5].delete_prefix('/') }
+  config.global_fixtures = files
+
   config.before do
     # signin user
     session[:user_id] = 1

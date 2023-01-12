@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 describe Web::WelcomeController do
-  render_views
-
   describe '#index' do
     it 'renders page' do
       get :index

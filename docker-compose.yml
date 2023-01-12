@@ -20,3 +20,5 @@ services:
     env_file:
       - .swarm/.env
       - .swarm/.env.secrets
+    stdin_open: true
+    tty: true

@@ -35,7 +35,6 @@ describe Web::RepositoriesController do
 
   describe 'GET /index' do
     it 'renders a successful response' do
-      Repository.create! valid_attributes
       get :index
       expect(response).to be_successful
     end
@@ -43,8 +42,7 @@ describe Web::RepositoriesController do
 
   describe 'GET /show' do
     it 'renders a successful response' do
-      repository = Repository.create! valid_attributes
-      get repository_path(repository)
+      get :show, params: { id: repositories(:repo_one) }
       expect(response).to be_successful
     end
   end
@@ -52,14 +50,6 @@ describe Web::RepositoriesController do
   describe 'GET /new' do
     it 'renders a successful response' do
       get :new
-      expect(response).to be_successful
-    end
-  end
-
-  describe 'GET /edit' do
-    it 'renders a successful response' do
-      repository = Repository.create! valid_attributes
-      get :edit, params: { repository: }
       expect(response).to be_successful
     end
   end
@@ -87,36 +77,6 @@ describe Web::RepositoriesController do
 
       it "renders a response with 422 status (i.e. to display the 'new' template)" do
         post repositories_path, params: { repository: invalid_attributes }
-        expect(response).to have_http_status(:unprocessable_entity)
-      end
-    end
-  end
-
-  describe 'PATCH /update' do
-    context 'with valid parameters' do
-      let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
-      end
-
-      it 'updates the requested repository' do
-        repository = Repository.create! valid_attributes
-        patch repository_path(repository), params: { repository: new_attributes }
-        repository.reload
-        skip('Add assertions for updated state')
-      end
-
-      it 'redirects to the repository' do
-        repository = Repository.create! valid_attributes
-        patch repository_path(repository), params: { repository: new_attributes }
-        repository.reload
-        expect(response).to redirect_to(repository_path(repository))
-      end
-    end
-
-    context 'with invalid parameters' do
-      it "renders a response with 422 status (i.e. to display the 'edit' template)" do
-        repository = Repository.create! valid_attributes
-        patch repository_path(repository), params: { repository: invalid_attributes }
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
