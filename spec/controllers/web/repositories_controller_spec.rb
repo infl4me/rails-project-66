@@ -58,12 +58,30 @@ describe Web::RepositoriesController do
       get :index
       expect(response).to be_successful
     end
+
+    context 'when guest mode' do
+      it 'renders 403 page' do
+        sign_out session
+
+        get :index
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
   end
 
   describe 'GET /show' do
     it 'renders a successful response' do
       get :show, params: { id: repositories(:repo_one) }
       expect(response).to be_successful
+    end
+
+    context 'when guest mode' do
+      it 'renders 403 page' do
+        sign_out session
+
+        get :show, params: { id: repositories(:repo_one) }
+        expect(response).to have_http_status(:forbidden)
+      end
     end
   end
 
@@ -73,6 +91,15 @@ describe Web::RepositoriesController do
 
       get :new
       expect(response).to be_successful
+    end
+
+    context 'when guest mode' do
+      it 'renders 403 page' do
+        sign_out session
+
+        get :new
+        expect(response).to have_http_status(:forbidden)
+      end
     end
   end
 
@@ -88,6 +115,17 @@ describe Web::RepositoriesController do
           post :create, params: { repository: { original_id: gh_attributes['id'] } }
         end.to change(Repository, :count).by(1)
         expect(response).to redirect_to(repositories_path)
+      end
+    end
+
+    context 'when guest mode' do
+      let(:gh_attributes) { gh_valid_attributes }
+
+      it 'renders 403 page' do
+        sign_out session
+
+        post :create, params: { repository: { original_id: gh_attributes['id'] } }
+        expect(response).to have_http_status(:forbidden)
       end
     end
 
@@ -112,6 +150,15 @@ describe Web::RepositoriesController do
         delete :destroy, params: { id: repositories(:repo_one) }
       end.to change(Repository, :count).by(-1)
       expect(response).to redirect_to(repositories_path)
+    end
+
+    context 'when guest mode' do
+      it 'renders 403 page' do
+        sign_out session
+
+        delete :destroy, params: { id: repositories(:repo_one) }
+        expect(response).to have_http_status(:forbidden)
+      end
     end
   end
 end

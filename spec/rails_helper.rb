@@ -28,10 +28,22 @@ require 'rspec/rails'
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 
+module AuthHelper
+  def sign_out(session)
+    session[:user_id] = nil
+  end
+
+  def sign_in(session)
+    session[:user_id] = 1
+  end
+end
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = Rails.root.join('spec/fixtures')
   config.include FactoryBot::Syntax::Methods
+
+  config.include AuthHelper, type: :controller
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -71,7 +83,6 @@ RSpec.configure do |config|
   config.global_fixtures = files
 
   config.before do
-    # signin user
-    session[:user_id] = 1
+    sign_in session
   end
 end
