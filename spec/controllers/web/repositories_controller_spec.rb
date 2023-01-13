@@ -15,22 +15,42 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 describe Web::RepositoriesController do
-  before do
+  let(:gh_repositories) do
+    YAML.load(Rails.root.join('spec/fixtures/files/github/repositories.yml').read)
+  end
+
+  let(:stub_repositories) do
     stub_request(:get, 'https://api.github.com/user/repos')
       .to_return(status: 200, body: gh_repositories, headers: {})
   end
 
-  let(:gh_repositories) { YAML.load(Rails.root.join('spec/fixtures/files/github/repositories.yml').read) }
+  let(:stub_repository) do
+    stub_request(:get, "https://api.github.com/repositories/#{gh_attributes['id']}")
+      .to_return(
+        status: 200, body: gh_attributes.to_json,
+        headers: { 'Content-Type' => ['application/json', 'charset=UTF-8'] }
+      )
+  end
 
   # This should return the minimal set of attributes required to create a valid
   # Repository. As you add validations to Repository, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
+  let(:gh_valid_attributes) do
+    repository_attributes = attributes_for(:repository, user: User.first)
+    {
+      'id' => repository_attributes[:original_id],
+      'name' => repository_attributes[:name],
+      'language' => repository_attributes[:language]
+    }
   end
 
-  let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
+  let(:gh_invalid_attributes) do
+    repository_attributes = attributes_for(:repository, user: User.first)
+    {
+      'id' => repository_attributes[:original_id],
+      'name' => repository_attributes[:name],
+      'language' => 'invalid_language'
+    }
   end
 
   describe 'GET /index' do
@@ -49,6 +69,8 @@ describe Web::RepositoriesController do
 
   describe 'GET /new' do
     it 'renders a successful response' do
+      stub_repositories
+
       get :new
       expect(response).to be_successful
     end
@@ -56,27 +78,29 @@ describe Web::RepositoriesController do
 
   describe 'POST /create' do
     context 'with valid parameters' do
-      it 'creates a new Repository' do
-        expect do
-          post repositories_path, params: { repository: valid_attributes }
-        end.to change(Repository, :count).by(1)
-      end
+      let(:gh_attributes) { gh_valid_attributes }
 
-      it 'redirects to the created repository' do
-        post repositories_path, params: { repository: valid_attributes }
-        expect(response).to redirect_to(repository_path(Repository.last))
+      it 'creates a new Repository' do
+        stub_repositories
+        stub_repository
+
+        expect do
+          post :create, params: { repository: { original_id: gh_attributes['id'] } }
+        end.to change(Repository, :count).by(1)
+        expect(response).to redirect_to(repositories_path)
       end
     end
 
     context 'with invalid parameters' do
-      it 'does not create a new Repository' do
-        expect do
-          post repositories_path, params: { repository: invalid_attributes }
-        end.not_to change(Repository, :count)
-      end
+      let(:gh_attributes) { gh_invalid_attributes }
 
-      it "renders a response with 422 status (i.e. to display the 'new' template)" do
-        post repositories_path, params: { repository: invalid_attributes }
+      it 'does not create a new Repository' do
+        stub_repositories
+        stub_repository
+
+        expect do
+          post :create, params: { repository: { original_id: gh_attributes['id'] } }
+        end.not_to change(Repository, :count)
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -84,15 +108,9 @@ describe Web::RepositoriesController do
 
   describe 'DELETE /destroy' do
     it 'destroys the requested repository' do
-      repository = Repository.create! valid_attributes
       expect do
-        delete repository_path(repository)
+        delete :destroy, params: { id: repositories(:repo_one) }
       end.to change(Repository, :count).by(-1)
-    end
-
-    it 'redirects to the repositories list' do
-      repository = Repository.create! valid_attributes
-      delete repository_path(repository)
       expect(response).to redirect_to(repositories_path)
     end
   end

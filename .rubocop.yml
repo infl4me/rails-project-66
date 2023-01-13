@@ -54,3 +54,6 @@ RSpec/PendingWithoutReason:
 
 RSpec/ExampleLength:
   Max: 15
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10
