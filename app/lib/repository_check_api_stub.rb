@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RepositoryCheckApi
+class RepositoryCheckApiStub
   def self.storage_repository_root_path(repository)
     Rails.root.join('tmp/repositories', repository.id.to_s)
   end
