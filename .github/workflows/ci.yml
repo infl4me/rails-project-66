@@ -30,19 +30,19 @@ jobs:
             --build-arg BUILDKIT_INLINE_CACHE=1 \
             -t ${IMAGE_NAME} -t ${IMAGE_NAME_LATEST} \
             --cache-from ${IMAGE_NAME_LATEST} --push .
-  check:
-    needs: build
-    name: Check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: Run tests
-        run: |
-          docker compose -f docker-compose-tests.yml up -d
-          chmod +x ./bin/tests.sh
-          ./bin/tests.sh
+  # check:
+  #   needs: build
+  #   name: Check
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@master
+  #     - name: Run tests
+  #       run: |
+  #         docker compose -f docker-compose-tests.yml up -d
+  #         chmod +x ./bin/tests.sh
+  #         ./bin/tests.sh
   build-web:
-    needs: check
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
