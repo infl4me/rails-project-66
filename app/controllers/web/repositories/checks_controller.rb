@@ -13,9 +13,13 @@ class Web::Repositories::ChecksController < Web::Repositories::ApplicationContro
   end
 
   def show
-    destination_path = destination_path(resource_repository, @repository_check)
-    data = File.read(destination_path.join('result.json'))
-    @check_output = JSON.pretty_generate(JSON.parse(data)) unless @repository_check.check_passed
+    unless @repository_check.check_passed # rubocop:disable Style/GuardClause
+      file_path = destination_path(resource_repository, @repository_check).join('result.json')
+      return unless File.exist?(file_path)
+
+      data = File.read(file_path)
+      @check_output = JSON.pretty_generate(JSON.parse(data)) unless @repository_check.check_passed
+    end
   end
 
   def create

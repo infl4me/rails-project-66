@@ -15,7 +15,7 @@ div
 
 div.d-flex.mt-3
   = button_to "Check repository", repository_checks_path(@repository), method: :post, class: 'btn btn-primary me-3'
-  = button_to "Destroy repository", @repository, method: :delete, class: 'btn btn-danger'
+  = button_to "Destroy repository", @repository, method: :delete, class: 'btn btn-danger',  form: { data: {turbo_confirm: 'Are you sure?' }}
 
 hr
 

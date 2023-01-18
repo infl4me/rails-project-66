@@ -1,9 +1,16 @@
-h1 Repositories
+.d-flex.justify-content-between.align-items-center
+  h1 Repositories
+  = link_to "New repository", new_repository_path, class: 'btn btn-primary'
 
-#repositories
-  - @repositories.each do |repository|
-    == render repository
-    p
-      = link_to "Show this repository", repository
-
-= link_to "New repository", new_repository_path
+table.table.table-striped.table-hover.mt-4
+  thead
+    tr
+      th scope="col" Name
+      th scope="col" Language
+      th scope="col" Last check status
+  tbody
+    - @repositories.each do |repository|
+      tr
+        td = link_to repository.name, repository
+        td = repository.language
+        td = repository.last_check&.check_passed

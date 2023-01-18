@@ -19,9 +19,7 @@ table.table
       td 
         a target="_blank" rel="noopener" href="https://github.com/#{@repository_check.repository.full_name}/commit/#{@repository_check.commit}"
           = @repository_check.commit
-          
 
-
-- unless @repository_check.check_passed
+- if @check_output
   h3 Output:
   pre.code-block = @check_output

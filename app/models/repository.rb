@@ -5,6 +5,7 @@ class Repository < ApplicationRecord
 
   belongs_to :user
   has_many :checks, dependent: :destroy
+  has_one :last_check, -> { order 'created_at' }, class_name: 'Repository::Check', inverse_of: :repository, dependent: nil
 
   enumerize :language, in: %i[javascript]
 
