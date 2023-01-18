@@ -5,6 +5,7 @@ FactoryBot.define do
     association :user
 
     name { Faker::Lorem.word }
+    full_name { "#{Faker::Lorem.word}/#{Faker::Lorem.word}" }
     language { 'javascript' }
     sequence(:original_id) { |n| n + 1000 }
   end

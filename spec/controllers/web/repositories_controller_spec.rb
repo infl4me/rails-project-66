@@ -40,6 +40,7 @@ describe Web::RepositoriesController do
     {
       'id' => repository_attributes[:original_id],
       'name' => repository_attributes[:name],
+      'full_name' => repository_attributes[:full_name],
       'language' => repository_attributes[:language]
     }
   end
@@ -49,6 +50,7 @@ describe Web::RepositoriesController do
     {
       'id' => repository_attributes[:original_id],
       'name' => repository_attributes[:name],
+      'full_name' => repository_attributes[:full_name],
       'language' => 'invalid_language'
     }
   end

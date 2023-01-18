@@ -29,3 +29,6 @@ en:
       created: Repository was successfully created
       updated: Repository was successfully updated
       destroyed: Repository was successfully deleted
+  repository_checks:
+    notices:
+      created: Repository check finished

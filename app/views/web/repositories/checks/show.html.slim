@@ -16,7 +16,7 @@ table.table
       td = link_to @repository_check.repository.full_name, @repository_check.repository
     tr
       td Commit SHA
-      td 
+      td
         a target="_blank" rel="noopener" href="https://github.com/#{@repository_check.repository.full_name}/commit/#{@repository_check.commit}"
           = @repository_check.commit
 
