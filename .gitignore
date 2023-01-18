@@ -18,6 +18,11 @@
 !/tmp/pids/
 !/tmp/pids/.keep
 
+# Ignore pidfiles, but keep the directory.
+/tmp/repositories/*
+!/tmp/repositories/
+!/tmp/repositories/.keep
+
 # Ignore uploaded files in development.
 /storage/*
 !/storage/.keep
@@ -31,3 +36,5 @@
 /config/master.key
 .swarm/.env.secrets
 .byebug_history
+
+node_modules

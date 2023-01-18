@@ -80,13 +80,16 @@ group :test do
   gem 'webmock'
 end
 
+gem 'aasm'
 gem 'appsignal'
 gem 'bootstrap'
+gem 'dry-container'
 gem 'enumerize'
 gem 'octokit'
 gem 'omniauth-github'
 gem 'omniauth-rails_csrf_protection'
 gem 'pundit'
 gem 'rails-i18n'
+gem 'rubyzip'
 gem 'sassc-rails'
 gem 'simple_form'

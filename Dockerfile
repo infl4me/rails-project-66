@@ -1,8 +1,12 @@
 FROM ruby:3.1.2
 
-RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
+RUN apt-get update -qq && apt-get install -y nodejs postgresql-client npm
+RUN npm install -g yarn
 
 WORKDIR /app
+
+COPY package.json yarn.lock ./
+RUN yarn
 
 COPY Gemfile .
 COPY Gemfile.lock .

@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_08_093953) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_15_235200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "repositories", force: :cascade do |t|
     t.string "name", null: false
+    t.string "full_name", null: false
     t.string "language", null: false
     t.integer "original_id"
     t.bigint "user_id", null: false
@@ -23,6 +24,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_093953) do
     t.datetime "updated_at", null: false
     t.index ["original_id"], name: "index_repositories_on_original_id", unique: true
     t.index ["user_id"], name: "index_repositories_on_user_id"
+  end
+
+  create_table "repository_checks", force: :cascade do |t|
+    t.string "state"
+    t.string "commit"
+    t.boolean "check_passed", default: false, null: false
+    t.bigint "repository_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["repository_id"], name: "index_repository_checks_on_repository_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -35,4 +46,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_093953) do
   end
 
   add_foreign_key "repositories", "users"
+  add_foreign_key "repository_checks", "repositories"
 end

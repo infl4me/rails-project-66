@@ -14,8 +14,9 @@ class Web::RepositoriesController < Web::ApplicationController
   end
 
   def new
-    @repository = authorize Repository.new
+    authorize Repository
 
+    @repository = Repository.new
     @repository_options = user_repository_options
   end
 
@@ -29,7 +30,8 @@ class Web::RepositoriesController < Web::ApplicationController
       user: current_user,
       original_id: gh_repo.id,
       language: gh_repo.language.downcase,
-      name: gh_repo.name
+      name: gh_repo.name,
+      full_name: gh_repo.full_name
     )
 
     if @repository.valid?
@@ -60,11 +62,9 @@ class Web::RepositoriesController < Web::ApplicationController
   end
 
   def user_repository_options
-    return @repository_options if @repository_options.present?
-
     client = Octokit::Client.new(access_token: current_user.token)
-    @repository_options = client.repos({})
-                                .filter { |repo| Repository.language.values.include?(repo['language'].downcase) } # rubocop:disable Performance/InefficientHashSearch
-                                .pluck(:name, :id)
+    client.repos
+          .filter { |repo| Repository.language.values.include?(repo['language'].downcase) } # rubocop:disable Performance/InefficientHashSearch
+          .pluck(:name, :id)
   end
 end

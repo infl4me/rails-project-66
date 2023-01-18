@@ -1,8 +1,44 @@
-p style="color: green" = notice
-
-== render @repository
+h2 Repository
 
 div
-  =< link_to "Back to repositories", repositories_path
+  strong.me-2 Name:
+  = @repository.full_name
+div
+  strong.me-2 Language:
+  = @repository.language
+div
+  strong.me-2 Created At:
+  = @repository.created_at.strftime('%F %T')
+div
+  strong.me-2 Updated At:
+  = @repository.updated_at.strftime('%F %T')
 
-  = button_to "Destroy this repository", @repository, method: :delete
+div.d-flex.mt-3
+  = button_to "Check repository", repository_checks_path(@repository), method: :post, class: 'btn btn-primary me-3'
+  = button_to "Destroy repository", @repository, method: :delete, class: 'btn btn-danger'
+
+hr
+
+h3.mt-5 Repository Checks:
+table.table.table-striped
+  thead
+    tr
+      th scope="col" #
+      th scope="col" State
+      th scope="col" SHA
+      th scope="col" Check Passed?
+      th scope="col" Created At
+  tbody
+    - @repository.checks.each do |check|
+      tr
+        td scope="row"
+          = link_to check.id, repository_check_path(@repository, check)
+        td scope="row"
+          = check.aasm.human_state
+        td scope="row"
+          a target="_blank" rel="noopener" href="https://github.com/#{@repository.full_name}/commit/#{check.commit}"
+            = check.commit
+        td scope="row"
+          = check.check_passed
+        td scope="row"
+          = check.created_at.strftime('%F %T')

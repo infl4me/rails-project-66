@@ -1,0 +1,27 @@
+h2 Repository Check
+
+table.table
+  tbody
+    tr
+      td Created At
+      td = @repository_check.created_at.strftime('%F %T')
+    tr
+      td State
+      td = @repository_check.aasm.human_state
+    tr
+      td Check Passed?
+      td = @repository_check.check_passed
+    tr
+      td Repository
+      td = link_to @repository_check.repository.full_name, @repository_check.repository
+    tr
+      td Commit SHA
+      td 
+        a target="_blank" rel="noopener" href="https://github.com/#{@repository_check.repository.full_name}/commit/#{@repository_check.commit}"
+          = @repository_check.commit
+          
+
+
+- unless @repository_check.check_passed
+  h3 Output:
+  pre.code-block = @check_output

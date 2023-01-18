@@ -1,6 +1,8 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    aasm (5.4.0)
+      concurrent-ruby (~> 1.0)
     actioncable (7.0.4)
       actionpack (= 7.0.4)
       activesupport (= 7.0.4)
@@ -88,6 +90,8 @@ GEM
     crass (1.0.6)
     date (3.3.3)
     diff-lcs (1.5.0)
+    dry-container (0.11.0)
+      concurrent-ruby (~> 1.0)
     enumerize (2.5.0)
       activesupport (>= 3.2)
     erubi (1.12.0)
@@ -256,6 +260,7 @@ GEM
       rubocop (~> 1.33)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
+    rubyzip (2.3.2)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -322,10 +327,12 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  aasm
   appsignal
   bootsnap
   bootstrap
   byebug
+  dry-container
   enumerize
   factory_bot_rails
   faker
@@ -344,6 +351,7 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rails
   rubocop-rspec
+  rubyzip
   sassc-rails
   simple_form
   slim-rails

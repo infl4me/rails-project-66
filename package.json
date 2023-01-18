@@ -1,0 +1,27 @@
+{
+  "name": "rails-project-66",
+  "version": "1.0.0",
+  "description": "[![Actions Status](https://github.com/infl4me/rails-project-66/workflows/hexlet-check/badge.svg)](https://github.com/infl4me/rails-project-66/actions) [![ci](https://github.com/infl4me/rails-project-66/actions/workflows/ci.yml/badge.svg)](https://github.com/infl4me/rails-project-66/actions/workflows/ci.yml)",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/infl4me/rails-project-66.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/infl4me/rails-project-66/issues"
+  },
+  "homepage": "https://github.com/infl4me/rails-project-66#readme",
+  "devDependencies": {
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.2"
+  }
+}
