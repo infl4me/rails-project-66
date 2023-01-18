@@ -19,6 +19,6 @@ class Repository::Check < ApplicationRecord
   end
 
   after_destroy do |repository_check|
-    FileUtils.rm_rf(Rails.root.join('tmp/repositories', repository_check.repository.id.to_s, 'checks', repository_check.id.to_s))
+    FileUtils.rm_rf(RepositoryCheckApi.storage_root_path(repository_check))
   end
 end
