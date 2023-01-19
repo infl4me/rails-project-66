@@ -15,6 +15,7 @@ services:
     volumes:
       - ./public/assets:/app/public/assets
       - ./log:/app/log
+      - ./repositories:/app/tmp/repositories
     env_file: .env
     healthcheck:
       test: ["CMD", "curl", "-i", "http://localhost:3000/healthcheck"]
