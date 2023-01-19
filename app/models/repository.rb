@@ -7,7 +7,7 @@ class Repository < ApplicationRecord
 
   has_many :checks, dependent: :destroy
   after_destroy do |repository|
-    FileUtils.rm_rf(RepositoryCheckApi.storage_repository_root_path(repository))
+    ApplicationContainer[:repository_check_api].after_destroy_repository_cleanup(repository)
   end
 
   has_one :last_check, -> { order 'created_at' }, class_name: 'Repository::Check', inverse_of: :repository, dependent: nil

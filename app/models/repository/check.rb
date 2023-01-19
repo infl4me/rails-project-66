@@ -19,6 +19,6 @@ class Repository::Check < ApplicationRecord
   end
 
   after_destroy do |repository_check|
-    FileUtils.rm_rf(RepositoryCheckApi.storage_root_path(repository_check))
+    ApplicationContainer[:repository_check_api].after_destroy_cleanup(repository_check)
   end
 end
