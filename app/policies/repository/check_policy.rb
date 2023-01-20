@@ -16,4 +16,8 @@ class Repository::CheckPolicy < ApplicationPolicy
   def create?
     @user.present? && @user == @repository_check.repository.user
   end
+
+  def output?
+    show?
+  end
 end

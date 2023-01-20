@@ -16,7 +16,11 @@ Rails.application.routes.draw do
 
     resources :repositories, only: %i[index new show destroy create] do
       scope module: :repositories do
-        resources :checks, only: %i[show create]
+        resources :checks, only: %i[show create] do
+          member do
+            get :output
+          end
+        end
       end
     end
   end

@@ -12,7 +12,7 @@ class Repository < ApplicationRecord
 
   has_one :last_check, -> { order 'created_at' }, class_name: 'Repository::Check', inverse_of: :repository, dependent: nil
 
-  enumerize :language, in: %i[javascript]
+  enumerize :language, in: %i[javascript ruby]
 
   validates :original_id, uniqueness: true
 end

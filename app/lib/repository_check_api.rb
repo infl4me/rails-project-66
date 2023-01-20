@@ -18,14 +18,14 @@ class RepositoryCheckApi
   end
 
   def self.storage_output_path(repository_check)
-    storage_root_path(repository_check).join('output.json')
+    storage_root_path(repository_check).join('output.html')
   end
 
   def self.get_output(repository_check)
     file_path = storage_output_path(repository_check)
     return unless File.exist?(file_path)
 
-    JSON.pretty_generate(JSON.parse(File.read(file_path)))
+    File.read(file_path)
   end
 
   def self.check(repository_check)
@@ -44,7 +44,15 @@ class RepositoryCheckApi
       end
     end
 
-    exit_status = Open3.popen3("yarn run eslint --format json -c .eslintrc.json --no-eslintrc #{repository_path} --output-file #{output_file_path}") { |_stdin, _stdout, _stderr, wait_thr| wait_thr.value.exitstatus }
+    command = if repository_check.repository.language.ruby?
+                "bundle exec rubocop -c .rubocop.yml --format html --out #{output_file_path} #{repository_path}"
+              elsif repository_check.repository.language.javascript?
+                "yarn run eslint --format html -c .eslintrc.json --no-eslintrc #{repository_path} --output-file #{output_file_path}"
+              else
+                raise 'invalid language value'
+              end
+
+    exit_status = Open3.popen3(command) { |_stdin, _stdout, _stderr, wait_thr| wait_thr.value.exitstatus }
 
     exit_status.zero?
   ensure

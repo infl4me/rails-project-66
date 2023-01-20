@@ -3,12 +3,16 @@
 require 'json'
 
 class Web::Repositories::ChecksController < Web::Repositories::ApplicationController
-  before_action :set_repository_check, only: %i[show]
+  before_action :set_repository_check, only: %i[show output]
 
   def show
     authorize @repository_check
+  end
 
-    @check_output = ApplicationContainer[:repository_check_api].get_output(@repository_check) unless @repository_check.check_passed
+  def output
+    authorize @repository_check
+
+    render inline: ApplicationContainer[:repository_check_api].get_output(@repository_check) # rubocop:disable Rails/RenderInline
   end
 
   def create
