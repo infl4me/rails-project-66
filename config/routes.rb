@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  get 'healthcheck' => 'healthcheck#index'
+  mount Sidekiq::Web => '/sidekiq'
+
   scope module: :web do
     root 'welcome#index'
 
@@ -15,6 +20,4 @@ Rails.application.routes.draw do
       end
     end
   end
-
-  get 'healthcheck' => 'healthcheck#index'
 end

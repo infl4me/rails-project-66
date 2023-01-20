@@ -1,14 +1,20 @@
 version: '3.9'
 
+volumes:
+  db-vol:
+  redis-vol:
+
 services:
   db:
     image: postgres:15.1
     volumes:
       - db-vol:/var/lib/postgresql/data
     env_file: .env
+  redis:
+    image: redis:7.0.8
+    volumes:
+      - redis-vol:/data
   app:
-    depends_on:
-      - db
     image: ${IMAGE_NAME}
     ports:
       - 3000:3000
@@ -32,9 +38,26 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
+  sidekiq:
+    image: ${IMAGE_NAME}
+    entrypoint: bundle exec sidekiq
+    env_file: .env
+    healthcheck:
+      test: "bundle exec sidekiqmon processes | grep $$(hostname)"
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
   web:
-    depends_on:
-      - app
     image: ${NGINX_IMAGE_NAME}
     ports:
       - 80:80
@@ -56,7 +79,3 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-
-
-volumes:
-  db-vol:

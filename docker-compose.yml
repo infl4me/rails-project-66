@@ -2,6 +2,7 @@ version: '3.9'
 
 volumes:
   gh-analyzer-db:
+  gh-analyzer-redis:
 
 services:
   db:
@@ -9,6 +10,10 @@ services:
     volumes:
       - gh-analyzer-db:/var/lib/postgresql/data
     env_file: .swarm/.env
+  redis:
+    image: redis:7.0.8
+    volumes:
+      - gh-analyzer-redis:/data
   app:
     build: .
     ports:
@@ -22,3 +27,14 @@ services:
       - .swarm/.env.secrets
     stdin_open: true
     tty: true
+  sidekiq:
+    build: .
+    volumes:
+      - ./:/app
+    entrypoint: bundle exec sidekiq
+    depends_on:
+      - redis
+      - db
+    env_file:
+      - .swarm/.env
+      - .swarm/.env.secrets
