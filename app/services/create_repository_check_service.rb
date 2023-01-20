@@ -5,10 +5,10 @@ require 'open3'
 require 'zip'
 
 class CreateRepositoryCheckService
-  def call(user, repository)
-    latest_commit_sha = ApplicationContainer[:octokit_client].latest_commit_sha(user, repository)
+  def call(repository_check)
+    latest_commit_sha = ApplicationContainer[:octokit_client].latest_commit_sha(repository_check.repository.user, repository_check.repository)
 
-    repository_check = Repository::Check.create!(repository:, commit: latest_commit_sha)
+    repository_check.update!(commit: latest_commit_sha)
 
     check_passed = ApplicationContainer[:repository_check_api].check(repository_check)
 

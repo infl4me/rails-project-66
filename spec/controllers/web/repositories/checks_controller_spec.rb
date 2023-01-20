@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe Web::Repositories::ChecksController do
+  include ActiveJob::TestHelper
+
   describe 'GET /show' do
     let(:repository_check) { repository_checks(:repository_check_one) }
 
@@ -28,6 +30,10 @@ describe Web::Repositories::ChecksController do
       expect do
         post :create, params: { repository_id: repository }
       end.to change(Repository::Check, :count).by(1)
+
+      perform_enqueued_jobs
+
+      expect(Repository::Check.last.state).to eq('finished')
 
       expect(response).to redirect_to(repository_check_path(repository, Repository::Check.last))
     end

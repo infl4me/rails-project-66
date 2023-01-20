@@ -13,4 +13,7 @@ slim-lint:
 console:
 	docker compose exec app rails c
 
+bash:
+	docker compose exec -it app bash
+
 .PHONY: test

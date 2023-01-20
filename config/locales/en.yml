@@ -31,4 +31,4 @@ en:
       destroyed: Repository was successfully deleted
   repository_checks:
     notices:
-      created: Repository check finished
+      started: Repository check has been started. Refresh the page in a few seconds

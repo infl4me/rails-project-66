@@ -12,11 +12,14 @@ class Web::Repositories::ChecksController < Web::Repositories::ApplicationContro
   end
 
   def create
-    authorize resource_repository.checks.build
+    repository_check = resource_repository.checks.build
+    authorize repository_check
 
-    repository_check = CreateRepositoryCheckService.new.call(current_user, resource_repository)
+    repository_check.save!
 
-    redirect_to repository_check_path(resource_repository, repository_check), notice: t('repository_checks.notices.created')
+    RepositoryCheckJob.perform_later(repository_check)
+
+    redirect_to repository_check_path(resource_repository, repository_check), notice: t('repository_checks.notices.started')
   end
 
   private
