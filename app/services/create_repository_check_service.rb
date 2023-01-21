@@ -17,7 +17,7 @@ class CreateRepositoryCheckService
     repository_check.finish!
     repository_check
   rescue StandardError => e
-    Rails.logger.error e
+    Rails.logger.error(e)
     Appsignal.set_error(e)
 
     repository_check.fail!

@@ -26,12 +26,25 @@ class Web::RepositoriesController < Web::ApplicationController
     client = Octokit::Client.new(access_token: current_user.token)
     gh_repo = client.repo(repository_params[:original_id].to_i)
 
+    if ENV.fetch('GITHUB_HOOK_BASE_URL', nil).present?
+      hook = client.create_hook(
+        gh_repo.id,
+        'web',
+        {
+          url: ENV.fetch('GITHUB_HOOK_BASE_URL') + api_checks_path,
+          content_type: 'json',
+          insecure_ssl: 1
+        }
+      )
+    end
+
     @repository = Repository.create(
       user: current_user,
       original_id: gh_repo.id,
       language: gh_repo.language.downcase,
       name: gh_repo.name,
-      full_name: gh_repo.full_name
+      full_name: gh_repo.full_name,
+      hook_id: hook&.id
     )
 
     if @repository.valid?
@@ -45,7 +58,17 @@ class Web::RepositoriesController < Web::ApplicationController
   def destroy
     authorize @repository
 
-    @repository.destroy
+    @repository.destroy!
+
+    client = Octokit::Client.new(access_token: current_user.token)
+
+    begin
+      client.remove_hook(@repository.original_id, @repository.hook_id) if @repository.hook_id.present?
+    rescue Octokit::Error
+      Rails.logger.error(e)
+      Appsignal.set_error(e)
+    end
+
     redirect_to repositories_url, notice: t('repositories.notices.destroyed')
   end
 
