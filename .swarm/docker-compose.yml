@@ -41,6 +41,8 @@ services:
   sidekiq:
     image: ${IMAGE_NAME}
     entrypoint: bundle exec sidekiq
+    volumes:
+      - ./repositories:/app/tmp/repositories
     env_file: .env
     healthcheck:
       test: "bundle exec sidekiqmon processes | grep $$(hostname)"
