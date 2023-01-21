@@ -23,6 +23,17 @@ class Web::RepositoriesController < Web::ApplicationController
   def create
     authorize Repository
 
+    @repository = Repository.new(
+      user: current_user,
+      original_id: repository_params[:original_id]
+    )
+
+    unless @repository.valid?
+      @repository_options = user_repository_options
+      render :new, status: :unprocessable_entity
+      return
+    end
+
     client = Octokit::Client.new(access_token: current_user.token)
     gh_repo = client.repo(repository_params[:original_id].to_i)
 
@@ -38,9 +49,7 @@ class Web::RepositoriesController < Web::ApplicationController
       )
     end
 
-    @repository = Repository.create(
-      user: current_user,
-      original_id: gh_repo.id,
+    @repository.update(
       language: gh_repo.language.downcase,
       name: gh_repo.name,
       full_name: gh_repo.full_name,

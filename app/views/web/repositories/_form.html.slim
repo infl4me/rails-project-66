@@ -7,6 +7,6 @@
           li = error.full_message
 
   .form-group.mb-3.select
-    = form.select(:original_id, @repository_options, { include_blank: '' }, { class: 'form-control select', required: true })
+    = form.select(:original_id, @repository_options, { include_blank: 'Select repository...' }, { class: 'form-control select' })
 
   = form.button :submit, class: 'btn btn-primary me-2'
