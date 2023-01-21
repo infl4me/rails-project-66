@@ -19,8 +19,8 @@ table.table
       td
         a target="_blank" rel="noopener" href="https://github.com/#{@repository_check.repository.full_name}/commit/#{@repository_check.commit}"
           = @repository_check.commit
-    - if @check_output
+    - if @check_output_exist
       tr
         td Offences
         td
-          = link_to 'Check report', output_repository_check_path(@repository_check.repository, @repository_check), target: '_blank', rel: 'noopener'
+          = link_to 'Full report', output_repository_check_path(@repository_check.repository, @repository_check), target: '_blank', rel: 'noopener'

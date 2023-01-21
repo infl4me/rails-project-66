@@ -7,6 +7,8 @@ class Web::Repositories::ChecksController < Web::Repositories::ApplicationContro
 
   def show
     authorize @repository_check
+
+    @check_output_exist = File.exist? ApplicationContainer[:repository_check_api].storage_output_path(@repository_check)
   end
 
   def output

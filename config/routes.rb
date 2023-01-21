@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   get 'healthcheck' => 'healthcheck#index'
   mount Sidekiq::Web => '/sidekiq'
 
+  namespace :api do
+    resources :checks, only: %i[create]
+  end
+
   scope module: :web do
     root 'welcome#index'
 
