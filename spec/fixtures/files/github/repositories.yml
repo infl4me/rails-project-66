@@ -1,8 +1,0 @@
-- id: 1
-  name: repo1
-  full_name: org1/repo1
-  language: JavaScript
-- id: 2
-  name: repo2
-  full_name: org2/repo2
-  language: JavaScript

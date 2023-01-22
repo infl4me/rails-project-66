@@ -34,26 +34,14 @@ class Web::RepositoriesController < Web::ApplicationController
       return
     end
 
-    client = Octokit::Client.new(access_token: current_user.token)
-    gh_repo = client.repo(repository_params[:original_id].to_i)
-
-    if ENV.fetch('GITHUB_HOOK_BASE_URL', nil).present?
-      hook = client.create_hook(
-        gh_repo.id,
-        'web',
-        {
-          url: ENV.fetch('GITHUB_HOOK_BASE_URL') + api_checks_path,
-          content_type: 'json',
-          insecure_ssl: 1
-        }
-      )
-    end
+    gh_repo = ApplicationContainer[:octokit_client].repository(current_user, @repository.original_id)
+    gh_hook = ApplicationContainer[:octokit_client].create_hook(current_user, gh_repo[:id])
 
     @repository.update(
-      language: gh_repo.language.downcase,
-      name: gh_repo.name,
-      full_name: gh_repo.full_name,
-      hook_id: hook&.id
+      language: gh_repo[:language].downcase,
+      name: gh_repo[:name],
+      full_name: gh_repo[:full_name],
+      hook_id: gh_hook&.dig(:id)
     )
 
     if @repository.valid?
@@ -69,10 +57,8 @@ class Web::RepositoriesController < Web::ApplicationController
 
     @repository.destroy!
 
-    client = Octokit::Client.new(access_token: current_user.token)
-
     begin
-      client.remove_hook(@repository.original_id, @repository.hook_id) if @repository.hook_id.present?
+      ApplicationContainer[:octokit_client].remove_hook(current_user, @repository) if @repository.hook_id.present?
     rescue Octokit::Error
       Rails.logger.error(e)
       Appsignal.set_error(e)
@@ -94,9 +80,9 @@ class Web::RepositoriesController < Web::ApplicationController
   end
 
   def user_repository_options
-    client = Octokit::Client.new(access_token: current_user.token)
-    client.repos
-          .filter { |repo| Repository.language.values.include?(repo['language'].downcase) } # rubocop:disable Performance/InefficientHashSearch
-          .pluck(:name, :id)
+    @user_repository_options ||= ApplicationContainer[:octokit_client]
+                                 .repositories(current_user)
+                                 .filter { |repo| Repository.language.values.include?(repo[:language].downcase) } # rubocop:disable Performance/InefficientHashSearch
+                                 .pluck(:name, :id)
   end
 end

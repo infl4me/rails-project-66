@@ -22,5 +22,7 @@ module App
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.active_job.queue_adapter = :sidekiq
+
+    routes.default_url_options[:host] = ENV.fetch('HOST_URL')
   end
 end
