@@ -65,6 +65,16 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "app_production"
 
   config.action_mailer.perform_caching = false
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.default_url_options = { host: '94.31.193.27', trailing_slash: true }
+  config.action_mailer.smtp_settings = {
+    user_name: ENV.fetch('SMTP_USER_NAME', nil),
+    password: ENV.fetch('SMTP_PASSWORD', nil),
+    address: ENV.fetch('SMTP_ADDRESS', nil),
+    domain: ENV.fetch('SMTP_DOMAIN', nil),
+    port: ENV.fetch('SMTP_PORT', nil),
+    authentication: :cram_md5
+  }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

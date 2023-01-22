@@ -22,10 +22,7 @@ class RepositoryCheckApiStub
   end
 
   def self.get_output(_repository_check)
-    {
-      'asd' => 'qwe',
-      'qwe' => 'asd'
-    }
+    '<div>DUMMY_HTML</div>'
   end
 
   def self.check(_repository_check)
