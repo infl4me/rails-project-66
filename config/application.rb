@@ -24,5 +24,7 @@ module App
     config.active_job.queue_adapter = :sidekiq
 
     routes.default_url_options[:host] = ENV.fetch('HOST_URL')
+
+    config._gh_disable_hooks = false
   end
 end

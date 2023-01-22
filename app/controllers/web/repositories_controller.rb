@@ -35,7 +35,7 @@ class Web::RepositoriesController < Web::ApplicationController
     end
 
     gh_repo = ApplicationContainer[:octokit_client].repository(current_user, @repository.original_id)
-    gh_hook = ApplicationContainer[:octokit_client].create_hook(current_user, gh_repo[:id])
+    gh_hook = ApplicationContainer[:octokit_client].create_hook(current_user, gh_repo[:id]) unless Rails.configuration._gh_disable_hooks
 
     @repository.update(
       language: gh_repo[:language].downcase,

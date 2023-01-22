@@ -25,7 +25,7 @@ class OctokitClient
       repository_id,
       'web',
       {
-        url: api_checks_url,
+        url: Rails.application.routes.url_helpers.api_checks_url,
         content_type: 'json',
         insecure_ssl: 1
       }
