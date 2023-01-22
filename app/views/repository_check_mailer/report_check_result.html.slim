@@ -1,5 +1,5 @@
 h1 = "Repository \"#{@repository_check.repository.full_name}\" report"
 p = "Repository check \"#{@repository_check.commit}\" has failed"
 p
-  | See full report
+  span> See full report
   = link_to 'here', output_repository_check_url(@repository_check.repository, @repository_check), target: '_blank', rel: 'noopener'
