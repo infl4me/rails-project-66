@@ -1,5 +1,5 @@
-h1 = "Repository \"#{@repository_check.repository.full_name}\" report"
-p = "Repository check \"#{@repository_check.commit}\" has failed"
+h1 = t('repository_check_mailer.report_check_result.title', name: @repository_check.repository.full_name)
+p = t('repository_check_mailer.report_check_result.description', sha: @repository_check.commit)
 p
-  span> See full report
-  = link_to 'here', output_repository_check_url(@repository_check.repository, @repository_check), target: '_blank', rel: 'noopener'
+  span> = t('repository_check_mailer.view_full_report')
+  = link_to t('repository_check_mailer.here'), output_repository_check_url(@repository_check.repository, @repository_check), target: '_blank', rel: 'noopener'

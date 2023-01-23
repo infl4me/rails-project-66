@@ -1,13 +1,13 @@
 .d-flex.justify-content-between.align-items-center
-  h1 Repositories
-  = link_to 'New repository', new_repository_path, class: 'btn btn-primary'
+  h1 = t('repositories.index')
+  = link_to t('repositories.new'), new_repository_path, class: 'btn btn-primary'
 
 table.table.table-striped.table-hover.mt-4
   thead
     tr
-      th scope="col" Name
-      th scope="col" Language
-      th scope="col" Last check status
+      th scope="col" = Repository.human_attribute_name(:name)
+      th scope="col" = Repository.human_attribute_name(:language)
+      th scope="col" = t('repositories.last_check_status')
   tbody
     - @repositories.each do |repository|
       tr

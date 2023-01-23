@@ -58,8 +58,5 @@ RSpec/ExampleLength:
 RSpec/MultipleMemoizedHelpers:
   Max: 10
 
-Rails/I18nLocaleTexts:
-  Enabled: false
-
 Style/GuardClause:
   Enabled: false

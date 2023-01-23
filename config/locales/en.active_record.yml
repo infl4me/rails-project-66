@@ -1,0 +1,7 @@
+en:
+  activerecord:
+    attributes:
+      repository:
+        original_id:
+          one: Repository
+          many: Repositories

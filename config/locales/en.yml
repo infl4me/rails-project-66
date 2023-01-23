@@ -1,12 +1,6 @@
 en:
   app_name: Github Analyzer
-  actions_title: Actions
-  edit_record: Edit %{name}
-  actions:
-    show: Show
-    edit: Edit
-    destroy: Delete
-    submit_form: Submit
+  welcome_message: Welcome to %{app_name}!
   confirmations:
     delete: Are you sure you want to delete this?
   auth:
@@ -17,18 +11,34 @@ en:
     general_message: Something went wrong. Try again later please
   repositories:
     index: Repositories
-    new: Create Repository
-    errors:
-      too_large: is too large
-    # alerts:
-    #   under_moderation: Repository couldn't be sent to moderation
-    #   published: Repository couldn't be published
-    #   rejected: Repository couldn't be rejected
-    #   archived: Repository couldn't be archived
+    new: New repository
+    show: Repository
+    last_check_status: Last check status
+    form:
+      select_placeholder: Select repository...
     notices:
       created: Repository was successfully created
       updated: Repository was successfully updated
       destroyed: Repository was successfully deleted
+    actions:
+      check: Check repository
+      create: Create repository
+      destroy: Delete repository
   repository_checks:
+    index: Repository checks
+    show: Repository check
+    offences: Offences
+    attributes:
+      sha: SHA
+      check_passed?: Check passed?
+      repository: Repository
+    actions:
+      full_report: Full report
     notices:
       started: Repository check has been started. Refresh the page in a few seconds
+  repository_check_mailer:
+    report_check_result:
+      title: Repository "%{name}" report
+      description: Repository check "%{sha}" has failed
+    view_full_report: View full report
+    here: here

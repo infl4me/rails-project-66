@@ -1,26 +1,26 @@
-h2 Repository Check
+h2 = t('repository_checks.show')
 
 table.table
   tbody
     tr
-      td Created At
+      td = Repository::Check.human_attribute_name(:created_at)
       td = @repository_check.created_at.strftime('%F %T')
     tr
-      td State
+      td = Repository::Check.human_attribute_name(:state)
       td = @repository_check.aasm.human_state
     tr
-      td Check Passed?
+      td = t('repository_checks.attributes.check_passed?')
       td = @repository_check.check_passed
     tr
-      td Repository
+      td = t('repository_checks.attributes.repository')
       td = link_to @repository_check.repository.full_name, @repository_check.repository
     tr
-      td Commit SHA
+      td = t('repository_checks.attributes.sha')
       td
         a target="_blank" rel="noopener" href="https://github.com/#{@repository_check.repository.full_name}/commit/#{@repository_check.commit}"
           = @repository_check.commit
     - if @check_output_exist
       tr
-        td Offences
+        td = t('repository_checks.offences')
         td
-          = link_to 'Full report', output_repository_check_path(@repository_check.repository, @repository_check), target: '_blank', rel: 'noopener'
+          = link_to t('repository_checks.actions.full_report'), output_repository_check_path(@repository_check.repository, @repository_check), target: '_blank', rel: 'noopener'

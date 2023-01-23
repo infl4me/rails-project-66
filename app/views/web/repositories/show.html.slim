@@ -1,33 +1,33 @@
-h2 Repository
+h2 = t('repositories.show')
 
 div
-  strong.me-2 Name:
+  strong.me-2 = "#{Repository.human_attribute_name(:full_name)}:"
   = @repository.full_name
 div
-  strong.me-2 Language:
+  strong.me-2 = "#{Repository.human_attribute_name(:language)}:"
   = @repository.language
 div
-  strong.me-2 Created At:
+  strong.me-2 = "#{Repository.human_attribute_name(:created_at)}:"
   = @repository.created_at.strftime('%F %T')
 div
-  strong.me-2 Updated At:
+  strong.me-2 = "#{Repository.human_attribute_name(:updated_at)}:"
   = @repository.updated_at.strftime('%F %T')
 
 .d-flex.mt-3
-  = button_to 'Check repository', repository_checks_path(@repository), method: :post, class: 'btn btn-primary me-3'
-  = button_to 'Destroy repository', @repository, method: :delete, class: 'btn btn-danger', form: { data: { turbo_confirm: 'Are you sure?' } }
+  = button_to t('repositories.actions.check'), repository_checks_path(@repository), method: :post, class: 'btn btn-primary me-3'
+  = button_to t('repositories.actions.destroy'), @repository, method: :delete, class: 'btn btn-danger', form: { data: { turbo_confirm: t('confirmations.delete') } }
 
 hr
 
-h3.mt-5 Repository Checks:
+h3.mt-5 = "#{t('repository_checks.index')}:"
 table.table.table-striped
   thead
     tr
       th scope="col" #
-      th scope="col" State
-      th scope="col" SHA
-      th scope="col" Check Passed?
-      th scope="col" Created At
+      th scope="col" = Repository::Check.human_attribute_name(:state)
+      th scope="col" = t('repository_checks.attributes.sha')
+      th scope="col" = t('repository_checks.attributes.check_passed?')
+      th scope="col" = Repository::Check.human_attribute_name(:created_at)
   tbody
     - @repository.checks.each do |check|
       tr

@@ -5,7 +5,7 @@ header.container.mb-2
       - if policy(Repository).index?
         = link_to t('repositories.index'), repositories_path, class: 'navbar-brand me-md-4'
     - if signed_in?
-      div = "Hi, #{current_user.nickname}"
+      div = current_user.nickname
       = button_to t('auth.sign_out'), auth_destroy_path, method: :delete, data: { turbo: false }, class: 'ms-3 btn btn-primary'
     - else
       = button_to t('auth.sign_in'), auth_request_path('github'), method: :post, data: { turbo: false }, class: 'ms-3 btn btn-primary'
