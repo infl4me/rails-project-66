@@ -5,10 +5,10 @@
 [Demo](http://94.31.193.27)
 
 ### Run app
-`docker compose up`
+`docker compose up --build`
 
 # Overview
-Web app pet project to play with rails and simple-ish devops (more below)
+Web app pet project to play with rails and some devops (more below)
 
 ### Rails app
 A project that helps to automatically monitor the quality of github repositories. It tracks changes and runs them through various analysis tools. Then generates reports and sends them to the user.
