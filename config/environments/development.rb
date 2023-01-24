@@ -84,4 +84,6 @@ Rails.application.configure do
   config.hosts.clear
 
   config._gh_disable_hooks = true
+
+  routes.default_url_options[:host] = ENV.fetch('HOST_URL', 'localhost')
 end
