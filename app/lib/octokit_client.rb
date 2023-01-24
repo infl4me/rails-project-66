@@ -6,7 +6,7 @@ class OctokitClient
   end
 
   def self.latest_commit_sha(user, repository)
-    commit = client(user).commits(repository.original_id).first
+    commit = client(user).commits(repository.github_id).first
     return if commit.nil?
 
     commit.sha[0..6]
@@ -33,6 +33,6 @@ class OctokitClient
   end
 
   def self.remove_hook(user, repository)
-    client(user).remove_hook(repository.original_id, repository.hook_id)
+    client(user).remove_hook(repository.github_id, repository.hook_id)
   end
 end

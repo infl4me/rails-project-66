@@ -13,5 +13,5 @@ class Repository < ApplicationRecord
 
   has_one :last_check, -> { order 'created_at' }, class_name: 'Repository::Check', inverse_of: :repository, dependent: nil
 
-  validates :original_id, uniqueness: true, presence: true
+  validates :github_id, uniqueness: true, presence: true
 end

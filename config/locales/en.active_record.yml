@@ -2,6 +2,6 @@ en:
   activerecord:
     attributes:
       repository:
-        original_id:
+        github_id:
           one: Repository
           many: Repositories

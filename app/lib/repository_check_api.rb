@@ -34,7 +34,7 @@ class RepositoryCheckApi
     output_file_path = storage_output_path(repository_check)
     FileUtils.mkdir_p(repository_path)
 
-    download = URI.open("https://api.github.com/repositories/#{repository_check.repository.original_id}/zipball/#{repository_check.commit}")
+    download = URI.open("https://api.github.com/repositories/#{repository_check.repository.github_id}/zipball/#{repository_check.commit}")
     IO.copy_stream(download, zip_file_path)
 
     Zip::File.open(zip_file_path) do |zip_file|

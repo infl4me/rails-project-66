@@ -25,7 +25,7 @@ class Web::RepositoriesController < Web::ApplicationController
 
     @repository = Repository.new(
       user: current_user,
-      original_id: repository_params[:original_id]
+      github_id: repository_params[:github_id]
     )
 
     unless @repository.valid?
@@ -34,7 +34,7 @@ class Web::RepositoriesController < Web::ApplicationController
       return
     end
 
-    gh_repo = ApplicationContainer[:octokit_client].repository(current_user, @repository.original_id)
+    gh_repo = ApplicationContainer[:octokit_client].repository(current_user, @repository.github_id)
     gh_hook = ApplicationContainer[:octokit_client].create_hook(current_user, gh_repo[:id]) unless Rails.configuration._gh_disable_hooks
 
     @repository.update(
@@ -76,7 +76,7 @@ class Web::RepositoriesController < Web::ApplicationController
 
   # Only allow a list of trusted parameters through.
   def repository_params
-    params.require(:repository).permit(:original_id)
+    params.require(:repository).permit(:github_id)
   end
 
   def user_repository_options

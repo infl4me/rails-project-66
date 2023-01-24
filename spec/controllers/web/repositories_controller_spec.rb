@@ -6,7 +6,7 @@ describe Web::RepositoriesController do
   let(:gh_valid_attributes) do
     repository_attributes = attributes_for(:repository, user: User.first)
     {
-      id: repository_attributes[:original_id],
+      id: repository_attributes[:github_id],
       name: repository_attributes[:name],
       full_name: repository_attributes[:full_name],
       language: repository_attributes[:language]
@@ -16,7 +16,7 @@ describe Web::RepositoriesController do
   let(:gh_invalid_attributes) do
     repository_attributes = attributes_for(:repository, user: User.first)
     {
-      id: repository_attributes[:original_id],
+      id: repository_attributes[:github_id],
       name: repository_attributes[:name],
       full_name: repository_attributes[:full_name],
       language: 'invalid_language'
@@ -75,7 +75,7 @@ describe Web::RepositoriesController do
     context 'with valid parameters' do
       it 'creates a new Repository' do
         expect do
-          post :create, params: { repository: { original_id: gh_valid_attributes[:id] } }
+          post :create, params: { repository: { github_id: gh_valid_attributes[:id] } }
         end.to change(Repository, :count).by(1)
         expect(response).to redirect_to(repositories_path)
       end
@@ -85,7 +85,7 @@ describe Web::RepositoriesController do
       it 'renders 403 page' do
         sign_out session
 
-        post :create, params: { repository: { original_id: gh_valid_attributes[:id] } }
+        post :create, params: { repository: { github_id: gh_valid_attributes[:id] } }
         expect(response).to have_http_status(:forbidden)
       end
     end
@@ -97,7 +97,7 @@ describe Web::RepositoriesController do
 
       it 'does not create a new Repository' do
         expect do
-          post :create, params: { repository: { original_id: gh_valid_attributes[:id] } }
+          post :create, params: { repository: { github_id: gh_valid_attributes[:id] } }
         end.not_to change(Repository, :count)
         expect(response).to have_http_status(:unprocessable_entity)
       end

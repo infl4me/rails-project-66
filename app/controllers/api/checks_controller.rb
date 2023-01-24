@@ -5,7 +5,7 @@ class Api::ChecksController < Api::ApplicationController
   def create
     return render json: {}, status: :bad_request unless request.headers['X-GitHub-Event'] == 'push'
 
-    repository = Repository.find_by!(original_id: params['repository']['id'])
+    repository = Repository.find_by!(github_id: params['repository']['id'])
 
     RepositoryCheckJob.perform_later(repository.checks.create!)
 
