@@ -8,10 +8,13 @@ default: &default
 
 development:
   <<: *default
-  database: github_analyzer_dev
+  # database: github_analyzer_dev
+  adapter: sqlite3
+  database: db/test.sqlite3
 
 test:
   <<: *default
+  # database: github_analyzer_test
   adapter: sqlite3
   database: db/test.sqlite3
 

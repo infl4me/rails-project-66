@@ -11,15 +11,12 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2023_01_21_080803) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "repositories", force: :cascade do |t|
     t.string "name", null: false
     t.string "full_name", null: false
     t.string "language", null: false
     t.integer "original_id"
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "hook_id"
@@ -31,7 +28,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_21_080803) do
     t.string "state"
     t.string "commit"
     t.boolean "check_passed", default: false, null: false
-    t.bigint "repository_id", null: false
+    t.integer "repository_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["repository_id"], name: "index_repository_checks_on_repository_id"
