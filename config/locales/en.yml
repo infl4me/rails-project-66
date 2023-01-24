@@ -30,7 +30,7 @@ en:
     offences: Offences
     attributes:
       sha: SHA
-      check_passed?: Check passed?
+      passed?: Check passed?
       repository: Repository
     actions:
       full_report: Full report

@@ -10,9 +10,9 @@ class CreateRepositoryCheckService
 
     repository_check.update!(commit: latest_commit_sha)
 
-    check_passed = ApplicationContainer[:repository_check_api].check(repository_check)
+    passed = ApplicationContainer[:repository_check_api].check(repository_check)
 
-    repository_check.update!(check_passed:)
+    repository_check.update!(passed:)
 
     repository_check.finish!
     repository_check

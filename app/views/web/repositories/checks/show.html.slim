@@ -9,8 +9,8 @@ table.table
       td = Repository::Check.human_attribute_name(:state)
       td = @repository_check.aasm.human_state
     tr
-      td = t('repository_checks.attributes.check_passed?')
-      td = @repository_check.check_passed
+      td = t('repository_checks.attributes.passed?')
+      td = @repository_check.passed
     tr
       td = t('repository_checks.attributes.repository')
       td = link_to @repository_check.repository.full_name, @repository_check.repository
