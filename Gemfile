@@ -79,6 +79,7 @@ group :development do
 end
 
 group :test do
+  gem 'minitest-power_assert'
   gem 'sqlite3'
   gem 'webmock'
 end
