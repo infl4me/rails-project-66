@@ -33,7 +33,7 @@ describe Web::Repositories::ChecksController do
 
       perform_enqueued_jobs
 
-      expect(Repository::Check.last.state).to eq('finished')
+      expect(Repository::Check.last.aasm_state).to eq('finished')
 
       expect(response).to redirect_to(repository_check_path(repository, Repository::Check.last))
     end

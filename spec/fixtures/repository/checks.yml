@@ -1,5 +1,5 @@
 repository_check_one:
-  state: finished
+  aasm_state: finished
   commit: aaaqqqe
   passed: false
   repository: repo_one
