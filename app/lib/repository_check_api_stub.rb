@@ -26,7 +26,7 @@ class RepositoryCheckApiStub
   end
 
   def self.check(_repository_check)
-    false
+    true
   end
 
   def self.after_destroy_repository_cleanup(repository); end

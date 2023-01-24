@@ -3,7 +3,7 @@
 class Api::ChecksController < Api::ApplicationController
   # github webhook listener
   def create
-    return render json: {}, status: :bad_request unless request.headers['X-GitHub-Event'] == 'push'
+    # return render json: {}, status: :bad_request unless request.headers['X-GitHub-Event'] == 'push'
 
     repository = Repository.find_by!(github_id: params['repository']['id'])
 
