@@ -9,8 +9,8 @@ default: &default
 development:
   <<: *default
   # database: github_analyzer_dev
-  adapter: sqlite3
-  database: db/test.sqlite3
+  adapter: <%= ENV.fetch('DB_ADAPTER') { sqlite3 } %>
+  database: <%= ENV.fetch('DB_NAME') { db/test.sqlite3 } %>
 
 test:
   <<: *default
