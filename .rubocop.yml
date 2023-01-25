@@ -57,6 +57,3 @@ RSpec/ExampleLength:
 
 RSpec/MultipleMemoizedHelpers:
   Max: 10
-
-Style/GuardClause:
-  Enabled: false
