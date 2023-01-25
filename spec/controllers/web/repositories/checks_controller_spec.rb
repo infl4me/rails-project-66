@@ -30,12 +30,11 @@ describe Web::Repositories::ChecksController do
       expect do
         post :create, params: { repository_id: repository }
       end.to change(Repository::Check, :count).by(1)
+      expect(response).to redirect_to(repository_check_path(repository, Repository::Check.last))
 
       perform_enqueued_jobs
 
       expect(Repository::Check.last.aasm_state).to eq('finished')
-
-      expect(response).to redirect_to(repository_check_path(repository, Repository::Check.last))
     end
 
     context 'when guest mode' do
