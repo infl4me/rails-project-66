@@ -8,13 +8,13 @@ class Web::Repositories::ChecksController < Web::Repositories::ApplicationContro
   def show
     authorize @repository_check
 
-    @check_output_exist = File.exist? ApplicationContainer[:repository_check_api].storage_output_path(@repository_check)
+    @check_output_exist = File.exist? repository_check_api.storage_output_path(@repository_check)
   end
 
   def output
     authorize @repository_check
 
-    render inline: ApplicationContainer[:repository_check_api].get_output(@repository_check) # rubocop:disable Rails/RenderInline
+    render inline: repository_check_api.get_output(@repository_check) # rubocop:disable Rails/RenderInline
   end
 
   def create
