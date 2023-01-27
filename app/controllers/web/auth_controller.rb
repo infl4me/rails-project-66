@@ -2,7 +2,7 @@
 
 class Web::AuthController < Web::ApplicationController
   def callback
-    user = ApplicationContainer[:authenticate_user_service].new.call(request.env['omniauth.auth'])
+    user = AuthenticateUserService.new.call(request.env['omniauth.auth'])
     sign_in user
 
     redirect_to root_path

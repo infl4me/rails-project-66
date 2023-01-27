@@ -36,6 +36,14 @@ module AuthHelper
   def sign_in(session)
     session[:user_id] = 1
   end
+
+  def signed_in?
+    session[:user_id].present? && current_user.present?
+  end
+
+  def current_user
+    @current_user ||= User.find_by(id: session[:user_id])
+  end
 end
 
 RSpec.configure do |config|
@@ -43,7 +51,7 @@ RSpec.configure do |config|
   config.fixture_path = Rails.root.join('spec/fixtures')
   config.include FactoryBot::Syntax::Methods
 
-  config.include AuthHelper, type: :controller
+  config.include AuthHelper
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -82,7 +90,7 @@ RSpec.configure do |config|
   files.map! { |f| f[config.fixture_path.to_s.size..-5].delete_prefix('/') }
   config.global_fixtures = files
 
-  config.before do
-    sign_in session
+  config.before do |example|
+    sign_in session if example.metadata[:type] == :controller
   end
 end
