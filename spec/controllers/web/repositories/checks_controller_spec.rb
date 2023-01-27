@@ -6,10 +6,12 @@ describe Web::Repositories::ChecksController do
   include ActiveJob::TestHelper
 
   describe 'GET /show' do
+    subject(:show) { get :show, params: { id: repository_check, repository_id: repository_check.repository } }
+
     let(:repository_check) { repository_checks(:repository_check_one) }
 
     it 'renders a successful response' do
-      get :show, params: { id: repository_check, repository_id: repository_check.repository }
+      show
       expect(response).to be_successful
     end
 
@@ -17,19 +19,20 @@ describe Web::Repositories::ChecksController do
       it 'renders 403 page' do
         sign_out session
 
-        get :show, params: { id: repository_check, repository_id: repository_check.repository }
+        show
+
         expect(response).to have_http_status(:forbidden)
       end
     end
   end
 
   describe 'POST /create' do
+    subject(:create) { post :create, params: { repository_id: repository } }
+
     let(:repository) { repositories(:repo_one) }
 
     it 'creates a new Repository Check' do
-      expect do
-        post :create, params: { repository_id: repository }
-      end.to change(Repository::Check, :count).by(1)
+      expect { create }.to change(Repository::Check, :count).by(1)
       expect(response).to redirect_to(repository_check_path(repository, Repository::Check.last))
 
       perform_enqueued_jobs
@@ -41,7 +44,8 @@ describe Web::Repositories::ChecksController do
       it 'renders 403 page' do
         sign_out session
 
-        post :create, params: { repository_id: repository }
+        create
+
         expect(response).to have_http_status(:forbidden)
       end
     end

@@ -4,8 +4,10 @@ require 'rails_helper'
 
 describe Web::WelcomeController do
   describe '#index' do
+    subject(:index) { get :index }
+
     it 'renders page' do
-      get :index
+      index
 
       expect(response).to be_successful
     end

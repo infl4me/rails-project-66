@@ -24,8 +24,11 @@ describe Web::RepositoriesController do
   end
 
   describe 'GET /index' do
+    subject(:index) { get :index }
+
     it 'renders a successful response' do
-      get :index
+      index
+
       expect(response).to be_successful
     end
 
@@ -33,15 +36,19 @@ describe Web::RepositoriesController do
       it 'renders 403 page' do
         sign_out session
 
-        get :index
+        index
+
         expect(response).to have_http_status(:forbidden)
       end
     end
   end
 
   describe 'GET /show' do
+    subject(:show) { get :show, params: { id: repositories(:repo_one) } }
+
     it 'renders a successful response' do
-      get :show, params: { id: repositories(:repo_one) }
+      show
+
       expect(response).to be_successful
     end
 
@@ -49,15 +56,19 @@ describe Web::RepositoriesController do
       it 'renders 403 page' do
         sign_out session
 
-        get :show, params: { id: repositories(:repo_one) }
+        show
+
         expect(response).to have_http_status(:forbidden)
       end
     end
   end
 
   describe 'GET /new' do
+    subject(:get_new) { get :new }
+
     it 'renders a successful response' do
-      get :new
+      get_new
+
       expect(response).to be_successful
     end
 
@@ -65,18 +76,20 @@ describe Web::RepositoriesController do
       it 'renders 403 page' do
         sign_out session
 
-        get :new
+        get_new
+
         expect(response).to have_http_status(:forbidden)
       end
     end
   end
 
   describe 'POST /create' do
+    subject(:create) { post :create, params: { repository: { github_id: gh_valid_attributes[:id] } } }
+
     context 'with valid parameters' do
       it 'creates a new Repository' do
-        expect do
-          post :create, params: { repository: { github_id: gh_valid_attributes[:id] } }
-        end.to change(Repository, :count).by(1)
+        expect { create }.to change(Repository, :count).by(1)
+
         expect(response).to redirect_to(repositories_path)
       end
     end
@@ -85,7 +98,8 @@ describe Web::RepositoriesController do
       it 'renders 403 page' do
         sign_out session
 
-        post :create, params: { repository: { github_id: gh_valid_attributes[:id] } }
+        create
+
         expect(response).to have_http_status(:forbidden)
       end
     end
@@ -96,19 +110,17 @@ describe Web::RepositoriesController do
       end
 
       it 'does not create a new Repository' do
-        expect do
-          post :create, params: { repository: { github_id: gh_valid_attributes[:id] } }
-        end.not_to change(Repository, :count)
+        expect { create }.not_to change(Repository, :count)
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
 
   describe 'DELETE /destroy' do
+    subject(:destroy) { delete :destroy, params: { id: repositories(:repo_one) } }
+
     it 'destroys the requested repository' do
-      expect do
-        delete :destroy, params: { id: repositories(:repo_one) }
-      end.to change(Repository, :count).by(-1)
+      expect { destroy }.to change(Repository, :count).by(-1)
       expect(response).to redirect_to(repositories_path)
     end
 
@@ -116,7 +128,8 @@ describe Web::RepositoriesController do
       it 'renders 403 page' do
         sign_out session
 
-        delete :destroy, params: { id: repositories(:repo_one) }
+        destroy
+
         expect(response).to have_http_status(:forbidden)
       end
     end

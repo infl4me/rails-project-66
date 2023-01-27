@@ -6,6 +6,8 @@ describe Api::ChecksController do
   include ActiveJob::TestHelper
 
   describe '#create' do
+    subject(:create) { post(:create, params:) }
+
     let(:repository) { repositories(:repo_one) }
     let(:params) do
       {
@@ -17,9 +19,7 @@ describe Api::ChecksController do
     end
 
     it 'creates repository check' do
-      expect do
-        post(:create, params:)
-      end.to change(Repository::Check, :count).by(1)
+      expect { create }.to change(Repository::Check, :count).by(1)
       expect(response).to be_successful
 
       perform_enqueued_jobs
