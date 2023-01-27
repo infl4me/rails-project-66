@@ -3,26 +3,6 @@
 require 'rails_helper'
 
 describe Web::RepositoriesController do
-  let(:gh_valid_attributes) do
-    repository_attributes = attributes_for(:repository, user: User.first)
-    {
-      id: repository_attributes[:github_id],
-      name: repository_attributes[:name],
-      full_name: repository_attributes[:full_name],
-      language: repository_attributes[:language]
-    }
-  end
-
-  let(:gh_invalid_attributes) do
-    repository_attributes = attributes_for(:repository, user: User.first)
-    {
-      id: repository_attributes[:github_id],
-      name: repository_attributes[:name],
-      full_name: repository_attributes[:full_name],
-      language: 'invalid_language'
-    }
-  end
-
   describe 'GET /index' do
     subject(:index) { get :index }
 
@@ -84,7 +64,9 @@ describe Web::RepositoriesController do
   end
 
   describe 'POST /create' do
-    subject(:create) { post :create, params: { repository: { github_id: gh_valid_attributes[:id] } } }
+    subject(:create) { post :create, params: { repository: { github_id: } } }
+
+    let(:github_id) { attributes_for(:repository, user: User.first)[:github_id] }
 
     context 'with valid parameters' do
       it 'creates a new Repository' do
@@ -105,6 +87,16 @@ describe Web::RepositoriesController do
     end
 
     context 'with invalid parameters' do
+      let(:gh_invalid_attributes) do
+        repository_attributes = attributes_for(:repository, user: User.first)
+        {
+          id: repository_attributes[:github_id],
+          name: repository_attributes[:name],
+          full_name: repository_attributes[:full_name],
+          language: 'invalid_language'
+        }
+      end
+
       before do
         allow(OctokitClientStub).to receive(:repository).and_return(gh_invalid_attributes)
       end
