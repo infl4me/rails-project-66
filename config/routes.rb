@@ -3,8 +3,8 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  get 'healthcheck' => 'healthcheck#index'
-  mount Sidekiq::Web => '/sidekiq' if Rails.env.development?
+  get 'healthcheck', to: 'healthcheck#index'
+  mount Sidekiq::Web, at: '/sidekiq'
 
   namespace :api do
     resources :checks, only: %i[create]
