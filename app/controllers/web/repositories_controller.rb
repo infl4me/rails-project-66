@@ -23,26 +23,7 @@ class Web::RepositoriesController < Web::ApplicationController
   def create
     authorize Repository
 
-    @repository = Repository.new(
-      user: current_user,
-      github_id: repository_params[:github_id]
-    )
-
-    unless @repository.valid?
-      @repository_options = user_repository_options
-      render :new, status: :unprocessable_entity
-      return
-    end
-
-    gh_repo = ApplicationContainer[:octokit_client].repository(current_user, @repository.github_id)
-    gh_hook = ApplicationContainer[:octokit_client].create_hook(current_user, gh_repo[:id]) unless Rails.configuration._gh_disable_hooks
-
-    @repository.update(
-      language: gh_repo[:language].downcase,
-      name: gh_repo[:name],
-      full_name: gh_repo[:full_name],
-      hook_id: gh_hook&.dig(:id)
-    )
+    @repository = CreateRepositoryService.new.call(current_user, repository_params[:github_id].to_i)
 
     if @repository.valid?
       redirect_to repositories_path, notice: t('repositories.notices.created')
@@ -58,7 +39,7 @@ class Web::RepositoriesController < Web::ApplicationController
     @repository.destroy!
 
     begin
-      ApplicationContainer[:octokit_client].remove_hook(current_user, @repository) if @repository.hook_id.present?
+      octokit_client.remove_hook(current_user, @repository) if @repository.hook_id.present?
     rescue Octokit::Error
       Rails.logger.error(e)
       Appsignal.set_error(e)
@@ -80,7 +61,7 @@ class Web::RepositoriesController < Web::ApplicationController
   end
 
   def user_repository_options
-    @user_repository_options ||= ApplicationContainer[:octokit_client]
+    @user_repository_options ||= octokit_client
                                  .repositories(current_user)
                                  .filter { |repo| Repository.language.values.include?(repo[:language].downcase) } # rubocop:disable Performance/InefficientHashSearch
                                  .pluck(:name, :id)

@@ -9,4 +9,8 @@ class ApplicationController < ActionController::Base
   def repository_check_api
     ApplicationContainer[:repository_check_api]
   end
+
+  def octokit_client
+    ApplicationContainer[:octokit_client]
+  end
 end
