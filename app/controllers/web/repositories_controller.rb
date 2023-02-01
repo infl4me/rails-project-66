@@ -23,7 +23,8 @@ class Web::RepositoriesController < Web::ApplicationController
   def create
     authorize Repository
 
-    @repository = CreateRepositoryService.new.call(current_user, repository_params[:github_id].to_i)
+    github_id = repository_params[:github_id].empty? ? nil : repository_params[:github_id].to_i
+    @repository = CreateRepositoryService.new.call(current_user, github_id)
 
     if @repository.valid?
       redirect_to repositories_path, notice: t('repositories.notices.created')
@@ -63,7 +64,7 @@ class Web::RepositoriesController < Web::ApplicationController
   def user_repository_options
     @user_repository_options ||= octokit_client
                                  .repositories(current_user)
-                                 .filter { |repo| Repository.language.values.include?(repo[:language].downcase) } # rubocop:disable Performance/InefficientHashSearch
+                                 .filter { |repo| Repository.language.values.include?(repo[:language]&.downcase) } # rubocop:disable Performance/InefficientHashSearch
                                  .pluck(:name, :id)
   end
 end
