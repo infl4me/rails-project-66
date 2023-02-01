@@ -4,8 +4,22 @@
 
 [Demo](http://94.31.193.27)
 
+# Setup
+
+### Prerequisites
+
+- Docker compose
+
 ### Run app
-`docker compose up --build`
+- Run `make start`
+- Go to http://localhost:3000
+
+# Commands
+- Run linter `make lint`
+- Run tests `make test`
+- Open rails console `make console`
+- Open bash inside rails container `make bash`
+- See `Makefile` for other commands
 
 # Overview
 Web app pet project to play with rails and some devops (more below)
