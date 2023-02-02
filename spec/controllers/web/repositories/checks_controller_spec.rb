@@ -21,7 +21,7 @@ describe Web::Repositories::ChecksController do
 
         show
 
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to redirect_to(root_path)
       end
     end
   end
@@ -46,7 +46,7 @@ describe Web::Repositories::ChecksController do
 
         create
 
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to redirect_to(root_path)
       end
     end
   end

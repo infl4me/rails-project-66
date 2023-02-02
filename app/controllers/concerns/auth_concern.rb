@@ -25,7 +25,7 @@ module AuthConcern
   end
 
   def handle_access_denied
-    render 'web/errors/access_denied', status: :forbidden
+    redirect_to root_path, alert: t('errors.access_denied')
   end
 
   def verify_profile

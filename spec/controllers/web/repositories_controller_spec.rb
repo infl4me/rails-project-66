@@ -18,7 +18,7 @@ describe Web::RepositoriesController do
 
         index
 
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to redirect_to(root_path)
       end
     end
   end
@@ -38,7 +38,7 @@ describe Web::RepositoriesController do
 
         show
 
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to redirect_to(root_path)
       end
     end
   end
@@ -58,7 +58,7 @@ describe Web::RepositoriesController do
 
         get_new
 
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to redirect_to(root_path)
       end
     end
   end
@@ -82,7 +82,7 @@ describe Web::RepositoriesController do
 
         create
 
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to redirect_to(root_path)
       end
     end
 
@@ -122,7 +122,7 @@ describe Web::RepositoriesController do
 
         destroy
 
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to redirect_to(root_path)
       end
     end
   end
