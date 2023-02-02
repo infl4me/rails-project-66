@@ -6,7 +6,7 @@ class Web::RepositoriesController < Web::ApplicationController
   def index
     authorize Repository
 
-    @repositories = Repository.includes(:last_check)
+    @repositories = current_user.repositories.includes(:last_check)
   end
 
   def show
