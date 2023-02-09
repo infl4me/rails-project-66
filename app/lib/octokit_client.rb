@@ -2,7 +2,9 @@
 
 class OctokitClient
   def self.client(user)
-    Octokit::Client.new(access_token: user.token)
+    client = Octokit::Client.new(access_token: user.token)
+    client.auto_paginate = true
+    client
   end
 
   def self.latest_commit_sha(user, repository)
